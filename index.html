@@ -36,12 +36,12 @@
   .wrap { max-width: 720px; margin: 0 auto; padding: 28px 20px 100px; position: relative; }
   header.top {
     display: flex; justify-content: space-between; align-items: baseline;
-    border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 22px; flex-wrap: wrap; gap: 10px;
   }
   header.top h1 { font-size: 1.6rem; font-weight: 600; margin: 0; letter-spacing: 0.01em; }
   header.top .tagline { color: var(--chalk-dim); font-size: 0.85rem; margin-top: 4px; }
-  header.top .right { display: flex; align-items: center; gap: 14px; }
-  .user-badge { font-size: 0.85rem; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; background: none; border: none; font-family: inherit; }
+  header.top .right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .user-badge, .link-btn { font-size: 0.85rem; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; background: none; border: none; font-family: inherit; padding: 0; }
   .sound-toggle { background: none; border: 1px solid var(--rule); border-radius: 20px; color: var(--chalk-dim); font-size: 0.8rem; padding: 4px 10px; cursor: pointer; font-family: inherit; }
   .sound-toggle:hover { color: var(--chalk); }
 
@@ -55,21 +55,19 @@
     border-radius: 6px; cursor: pointer;
   }
   .gate-btns button:hover { background: var(--surface-hi); }
-  input.passcode {
+  input.passcode, input.name-input {
     width: 100%; padding: 12px; font-size: 1rem; border-radius: 6px;
     border: 1px solid var(--rule); background: var(--surface); color: var(--chalk);
-    text-align: center; letter-spacing: 0.1em; margin-bottom: 10px;
+    margin-bottom: 10px; font-family: inherit;
   }
+  input.passcode { text-align: center; letter-spacing: 0.1em; }
   .gate-submit {
     width: 100%; padding: 12px; background: var(--accent); color: var(--bg-deep);
     border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem;
   }
   .gate-error { color: var(--bad); font-size: 0.85rem; min-height: 1.2em; }
 
-  /* --- Stats bar on the map screen --- */
-  .stats-bar {
-    display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap;
-  }
+  .stats-bar { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .stat-chip {
     background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
     padding: 10px 16px; flex: 1; min-width: 140px;
@@ -77,7 +75,6 @@
   .stat-chip .num { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
   .stat-chip .lbl { font-size: 0.72rem; color: var(--chalk-dim); }
 
-  /* --- Mastery map (trail of nodes) --- */
   .map { position: relative; padding-left: 44px; }
   .map::before {
     content: ""; position: absolute; left: 19px; top: 22px; bottom: 22px; width: 2px;
@@ -127,6 +124,7 @@
 
   .lesson-body { font-family: 'Fraunces', serif; font-size: 1.05rem; line-height: 1.7; white-space: pre-wrap; }
   .lesson-body strong { color: var(--accent); }
+  sup, sub { font-size: 0.7em; }
   .next-btn {
     margin-top: 26px; padding: 12px 22px; background: var(--accent); color: var(--bg-deep);
     border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.95rem;
@@ -167,15 +165,36 @@
   .result-msg.win { color: var(--good); }
   .result-msg.boss { color: var(--boss); }
 
-  /* --- Avatar --- */
+  /* --- Customize screen --- */
+  .picker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+  .picker-card {
+    background: var(--surface); border: 2px solid var(--rule); border-radius: 10px;
+    padding: 14px; text-align: center; cursor: pointer; transition: border-color 0.15s;
+  }
+  .picker-card:hover { border-color: var(--accent-dim); }
+  .picker-card.selected { border-color: var(--accent); background: var(--surface-hi); }
+  .picker-card .pcard-label { font-family: 'Fraunces', serif; font-weight: 600; margin-top: 6px; }
+  .picker-card .pcard-sub { font-size: 0.7rem; color: var(--chalk-dim); margin-top: 2px; }
+  .preview-panel {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 22px; text-align: center; margin-bottom: 22px;
+  }
+  .preview-mood-btns { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .mood-btn {
+    background: var(--bg-deep); border: 1px solid var(--rule); color: var(--chalk-dim);
+    border-radius: 20px; padding: 6px 14px; font-size: 0.78rem; cursor: pointer; font-family: inherit;
+  }
+  .mood-btn:hover { color: var(--chalk); border-color: var(--accent-dim); }
+  .section-label { font-family: 'Fraunces', serif; font-size: 1.05rem; margin: 22px 0 10px; }
+
+  /* --- Avatar (fixed corner during quiz/result) --- */
   #avatar-wrap {
-    position: fixed; bottom: 18px; right: 18px; width: 64px; height: 64px; z-index: 50;
+    position: fixed; bottom: 18px; right: 18px; width: 72px; height: 72px; z-index: 50;
     filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
     transition: transform 0.25s;
   }
   #avatar-wrap.bump { transform: scale(1.15) rotate(-4deg); }
 
-  /* --- Confetti --- */
   .confetti-piece {
     position: fixed; top: -10px; width: 8px; height: 14px; z-index: 100;
     opacity: 0.95; pointer-events: none;
@@ -184,29 +203,119 @@
   @keyframes confetti-fall {
     to { transform: translateY(105vh) rotate(540deg); opacity: 0.3; }
   }
+
+  /* --- Background decor layer (stars / dapples) --- */
+  #bg-decor { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .bg-star {
+    position: absolute; background: #fff; border-radius: 50%;
+    opacity: 0.7; animation: star-twinkle 3s ease-in-out infinite;
+  }
+  @keyframes star-twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
+  .bg-dapple {
+    position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(242,237,221,0.10) 0%, transparent 70%);
+    filter: blur(2px);
+  }
+  .bg-swatch { width: 100%; height: 36px; border-radius: 6px; margin-bottom: 8px; }
+
+  /* --- Celebration video modal --- */
+  #video-modal-backdrop {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  #video-modal-backdrop.open { display: flex; }
+  .video-modal-box {
+    background: var(--surface); border-radius: 12px; padding: 16px; max-width: 480px; width: 100%;
+  }
+  .video-frame-wrap { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 8px; overflow: hidden; }
+  .video-frame-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  .video-modal-box .next-btn { width: 100%; margin-top: 14px; }
+
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
 <div id="avatar-wrap"></div>
+<div id="bg-decor"></div>
+<div id="video-modal-backdrop"><div class="video-modal-box" id="video-modal-box"></div></div>
 
 <script>
-const CONTENT = {"units_digit_powers": {"name": "Units Digit of High Powers", "lesson": "**Units digit of a number raised to a high power**\n\nYou never need to compute the actual (huge) number -- the units digit of a^n\ncycles in a short, predictable pattern based only on the units digit of a.\n\nCycle lengths by units digit of the base:\n- 0, 1, 5, 6 -> cycle length 1 (units digit never changes)\n- 4, 9 -> cycle length 2\n- 2, 3, 7, 8 -> cycle length 4 (this is the longest any cycle ever gets)\n\nHow to solve:\n1. Look only at the units digit of the base.\n2. Write out powers 1 through 4 of that digit to find the cycle.\n3. Divide the exponent by the cycle length. The remainder tells you which\n   position in the cycle to use.\n4. Gotcha: if the remainder is 0, use the LAST position in the cycle, not a\n   \"0th\" position. Example: 7^20 -> cycle is 7,9,3,1 (length 4).\n   20 / 4 = 5 remainder 0 -> use the 4th (last) position -> units digit 1.\n\nSanity check: if you haven't seen the pattern repeat by the 5th power, you've\nmade an arithmetic error -- 4 is the max possible cycle length.\n", "flashcards": [{"front": "Units digit cycle length for bases ending in 0, 1, 5, 6?", "back": "1 -- the units digit never changes."}, {"front": "Units digit cycle length for bases ending in 4 or 9?", "back": "2."}, {"front": "Units digit cycle length for bases ending in 2, 3, 7, or 8?", "back": "4 -- the longest possible cycle."}, {"front": "Cycle of units digits for a base ending in 3?", "back": "3, 9, 7, 1 -- then repeats."}, {"front": "Exponent divided by cycle length gives remainder 0. What position in the cycle do you use?", "back": "The LAST position in the cycle, not position 0."}, {"front": "What's the maximum possible units-digit cycle length, and what does it mean if you haven't seen a repeat by the 5th power?", "back": "Max is 4 -- if no repeat by then, you've made an error."}], "bank": [{"question": "What is the units digit of 2^8?", "choices": ["8", "2", "7", "6"], "correctIndex": 3, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 8 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 2^20?", "choices": ["7", "8", "6", "2"], "correctIndex": 2, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 20 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 3^15?", "choices": ["1", "3", "9", "7"], "correctIndex": 3, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 15 mod 4 = 3, so we use position 3 -> 7."}, {"question": "What is the units digit of 3^40?", "choices": ["3", "7", "1", "2"], "correctIndex": 2, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 40 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 7^23?", "choices": ["1", "9", "7", "3"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 23 mod 4 = 3, so we use position 3 -> 3."}, {"question": "What is the units digit of 7^20?", "choices": ["7", "2", "3", "1"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 20 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 8^27?", "choices": ["4", "6", "2", "8"], "correctIndex": 2, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 27 mod 4 = 3, so we use position 3 -> 2."}, {"question": "What is the units digit of 8^44?", "choices": ["8", "7", "6", "2"], "correctIndex": 2, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 44 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 4^17?", "choices": ["4", "5", "6", "2"], "correctIndex": 0, "explanation": "4 ends in 4, whose units-digit cycle is 4, 6 (length 2). 17 mod 2 = 1, so we use position 1 -> 4."}, {"question": "What is the units digit of 4^30?", "choices": ["7", "9", "6", "4"], "correctIndex": 2, "explanation": "4 ends in 4, whose units-digit cycle is 4, 6 (length 2). 30 mod 2 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 9^13?", "choices": ["10", "1", "7", "9"], "correctIndex": 3, "explanation": "9 ends in 9, whose units-digit cycle is 9, 1 (length 2). 13 mod 2 = 1, so we use position 1 -> 9."}, {"question": "What is the units digit of 9^18?", "choices": ["-1", "2", "9", "1"], "correctIndex": 3, "explanation": "9 ends in 9, whose units-digit cycle is 9, 1 (length 2). 18 mod 2 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 6^21?", "choices": ["9", "7", "6", "4"], "correctIndex": 2, "explanation": "6 ends in 6, whose units-digit cycle is 6 (length 1). 21 mod 1 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 1^55?", "choices": ["-1", "4", "2", "1"], "correctIndex": 3, "explanation": "1 ends in 1, whose units-digit cycle is 1 (length 1). 55 mod 1 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 5^91?", "choices": ["5", "6", "8", "3"], "correctIndex": 0, "explanation": "5 ends in 5, whose units-digit cycle is 5 (length 1). 91 mod 1 = 0, so we use the last position in the cycle -> 5."}, {"question": "What is the units digit of 0^12?", "choices": ["3", "0", "-2", "1"], "correctIndex": 1, "explanation": "0 ends in 0, whose units-digit cycle is 0 (length 1). 12 mod 1 = 0, so we use the last position in the cycle -> 0."}, {"question": "What is the units digit of 2^51?", "choices": ["6", "2", "4", "8"], "correctIndex": 3, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 51 mod 4 = 3, so we use position 3 -> 8."}, {"question": "What is the units digit of 3^100?", "choices": ["3", "2", "1", "7"], "correctIndex": 2, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 100 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 7^99?", "choices": ["7", "9", "1", "3"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 99 mod 4 = 3, so we use position 3 -> 3."}, {"question": "What is the units digit of 8^63?", "choices": ["2", "6", "4", "8"], "correctIndex": 0, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 63 mod 4 = 3, so we use position 3 -> 2."}, {"question": "What is the units digit of 12^34?", "choices": ["4", "2", "5", "8"], "correctIndex": 0, "explanation": "12 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 34 mod 4 = 2, so we use position 2 -> 4."}, {"question": "What is the units digit of 13^27?", "choices": ["7", "3", "9", "1"], "correctIndex": 0, "explanation": "13 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 27 mod 4 = 3, so we use position 3 -> 7."}, {"question": "What is the units digit of 17^45?", "choices": ["9", "8", "1", "7"], "correctIndex": 3, "explanation": "17 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 45 mod 4 = 1, so we use position 1 -> 7."}, {"question": "What is the units digit of 24^19?", "choices": ["5", "2", "4", "6"], "correctIndex": 2, "explanation": "24 ends in 4, whose units-digit cycle is 4, 6 (length 2). 19 mod 2 = 1, so we use position 1 -> 4."}]}, "gcf_lcm": {"name": "GCF & LCM Tricks (and Telling Them Apart)", "lesson": "**GCF trick, LCM trick, and telling them apart**\n\nGCF trick: for unequal integers a and b, GCF(a,b) must divide |a-b|. Find\n|a-b| first, list ITS factors, then test from largest to smallest against\nboth original numbers.\n\nLCM trick: just list multiples of the larger number and check them against\nthe smaller number -- for ACT-sized numbers this is usually faster than the\n\"multiply then divide by GCF\" formula.\n\nThe distinction that trips people up:\n- GCF (Greatest Common FACTOR) divides INTO both numbers -- always <= the\n  smaller number. It should feel SMALL.\n- LCM (Least Common Multiple) is divided INTO BY both numbers -- always >=\n  the larger number. It should feel BIG.\n\nGut check on test day: if your GCF answer is bigger than the smaller number,\nor your LCM answer is smaller than the larger number, you mixed them up.\n", "flashcards": [{"front": "GCF trick: what must the GCF of a and b divide?", "back": "|a - b| -- the absolute value of their difference."}, {"front": "Fastest way to find LCM of two ACT-sized numbers?", "back": "List multiples of the larger number and check against the smaller one."}, {"front": "Should a GCF answer feel big or small?", "back": "Small -- it can never exceed the smaller of the two numbers."}, {"front": "Should an LCM answer feel big or small?", "back": "Big -- it can never be less than the larger of the two numbers."}, {"front": "Gut-check rule to catch a GCF/LCM mix-up", "back": "GCF <= smaller number; LCM >= larger number. If it doesn't fit, you swapped them."}], "bank": [{"question": "What is the LCM of 85 and 68?", "choices": ["17", "340", "85", "5780"], "correctIndex": 1, "explanation": "Listing multiples of 85 until one is also a multiple of 68 gives 340. (Note 17 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 24 and 36?", "choices": ["12", "864", "36", "72"], "correctIndex": 3, "explanation": "Listing multiples of 36 until one is also a multiple of 24 gives 72. (Note 12 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 18 and 30?", "choices": ["540", "90", "6", "30"], "correctIndex": 1, "explanation": "Listing multiples of 30 until one is also a multiple of 18 gives 90. (Note 6 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 45 and 27?", "choices": ["27", "135", "9", "18"], "correctIndex": 2, "explanation": "|45-27| = 18. Testing its factors against both numbers, the largest one that divides both 45 and 27 is 9. (Note 135 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 56 and 42?", "choices": ["2352", "14", "168", "56"], "correctIndex": 2, "explanation": "Listing multiples of 56 until one is also a multiple of 42 gives 168. (Note 14 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 63 and 84?", "choices": ["21", "22", "63", "252"], "correctIndex": 0, "explanation": "|63-84| = 21. Testing its factors against both numbers, the largest one that divides both 63 and 84 is 21. (Note 252 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 13 and 91?", "choices": ["1183", "91", "13", "92"], "correctIndex": 1, "explanation": "Listing multiples of 91 until one is also a multiple of 13 gives 91. (Note 13 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 48 and 60?", "choices": ["240", "48", "12", "13"], "correctIndex": 2, "explanation": "|48-60| = 12. Testing its factors against both numbers, the largest one that divides both 48 and 60 is 12. (Note 240 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 72 and 90?", "choices": ["19", "18", "72", "360"], "correctIndex": 1, "explanation": "|72-90| = 18. Testing its factors against both numbers, the largest one that divides both 72 and 90 is 18. (Note 360 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 33 and 55?", "choices": ["55", "1815", "11", "165"], "correctIndex": 3, "explanation": "Listing multiples of 55 until one is also a multiple of 33 gives 165. (Note 11 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 14 and 35?", "choices": ["7", "70", "35", "490"], "correctIndex": 1, "explanation": "Listing multiples of 35 until one is also a multiple of 14 gives 70. (Note 7 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 28 and 42?", "choices": ["14", "84", "15", "28"], "correctIndex": 0, "explanation": "|28-42| = 14. Testing its factors against both numbers, the largest one that divides both 28 and 42 is 14. (Note 84 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 17 and 51?", "choices": ["18", "17", "51", "34"], "correctIndex": 1, "explanation": "|17-51| = 34. Testing its factors against both numbers, the largest one that divides both 17 and 51 is 17. (Note 51 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 39 and 65?", "choices": ["65", "13", "2535", "195"], "correctIndex": 3, "explanation": "Listing multiples of 65 until one is also a multiple of 39 gives 195. (Note 13 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 22 and 55?", "choices": ["22", "110", "33", "11"], "correctIndex": 3, "explanation": "|22-55| = 33. Testing its factors against both numbers, the largest one that divides both 22 and 55 is 11. (Note 110 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 26 and 65?", "choices": ["39", "13", "26", "130"], "correctIndex": 1, "explanation": "|26-65| = 39. Testing its factors against both numbers, the largest one that divides both 26 and 65 is 13. (Note 130 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 36 and 60?", "choices": ["36", "12", "180", "24"], "correctIndex": 1, "explanation": "|36-60| = 24. Testing its factors against both numbers, the largest one that divides both 36 and 60 is 12. (Note 180 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 54 and 90?", "choices": ["54", "18", "270", "36"], "correctIndex": 1, "explanation": "|54-90| = 36. Testing its factors against both numbers, the largest one that divides both 54 and 90 is 18. (Note 270 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 21 and 49?", "choices": ["21", "7", "28", "147"], "correctIndex": 1, "explanation": "|21-49| = 28. Testing its factors against both numbers, the largest one that divides both 21 and 49 is 7. (Note 147 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 44 and 66?", "choices": ["132", "44", "22", "23"], "correctIndex": 2, "explanation": "|44-66| = 22. Testing its factors against both numbers, the largest one that divides both 44 and 66 is 22. (Note 132 is the LCM, a common mix-up.)"}, {"question": "Which statement is always true for two different positive integers a and b?", "choices": ["GCF(a,b) is less than or equal to the smaller of a and b", "GCF(a,b) and LCM(a,b) are always equal", "GCF(a,b) is always greater than LCM(a,b)", "LCM(a,b) is less than or equal to the smaller of a and b"], "correctIndex": 0, "explanation": "GCF can never exceed the smaller number; LCM can never be smaller than the larger number."}, {"question": "Which statement is always true for two different positive integers a and b?", "choices": ["LCM(a,b) is greater than or equal to the larger of a and b", "GCF(a,b) is greater than or equal to the larger of a and b", "LCM(a,b) equals a - b", "LCM(a,b) is less than a and b"], "correctIndex": 0, "explanation": "LCM must be a multiple of both numbers, so it can never be smaller than the larger one."}, {"question": "A student says the GCF of 18 and 24 is 72. What went wrong?", "choices": ["They forgot to divide by 2", "They calculated the LCM instead of the GCF", "72 is actually correct", "They calculated a - b instead"], "correctIndex": 1, "explanation": "72 is the LCM of 18 and 24 (the GCF is 6). This is the classic GCF/LCM swap."}]}, "arith_geo_sequences": {"name": "Arithmetic vs. Geometric Sequences", "lesson": "**Arithmetic vs. geometric sequences**\n\nArithmetic sequence: constant DIFFERENCE between consecutive terms (add/\nsubtract the same number each time). a_n = a_1 + (n-1)d\n\nGeometric sequence: constant RATIO between consecutive terms (multiply by\nthe same number each time). a_n = a_1 * r^(n-1)\n\nQuick test: is the GAP between terms constant (arithmetic), or is the RATIO\nbetween terms constant (geometric)? Check both before assuming.\n", "flashcards": [{"front": "What stays constant in an arithmetic sequence?", "back": "The difference between consecutive terms."}, {"front": "What stays constant in a geometric sequence?", "back": "The ratio between consecutive terms."}, {"front": "Formula for the nth term of an arithmetic sequence?", "back": "a_n = a_1 + (n-1)d"}, {"front": "Formula for the nth term of a geometric sequence?", "back": "a_n = a_1 * r^(n-1)"}, {"front": "Fastest way to tell which type a sequence is?", "back": "Check if consecutive terms have a constant gap (arithmetic) or constant ratio (geometric)."}], "bank": [{"question": "What is the next term in this geometric sequence: 7, -14, 28, -56, ...?", "choices": ["112", "113", "-77", "-56"], "correctIndex": 0, "explanation": "Common ratio is -2 (each term = previous * -2). Next term = -56 * -2 = 112."}, {"question": "What is the next term in this arithmetic sequence: 4, 7, 10, 13, ...?", "choices": ["19", "10", "22.75", "16"], "correctIndex": 3, "explanation": "Common difference is 3 (each term = previous + 3). Next term = 13 + 3 = 16."}, {"question": "What is the next term in this arithmetic sequence: 4, 6, 8, 10, ...?", "choices": ["15", "8", "14", "12"], "correctIndex": 3, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 10 + 2 = 12."}, {"question": "What is the next term in this arithmetic sequence: 2, 4, 6, 8, ...?", "choices": ["16", "6", "10", "12"], "correctIndex": 2, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 8 + 2 = 10."}, {"question": "What is the next term in this geometric sequence: 8, 16, 32, 64, ...?", "choices": ["128", "129", "64", "72"], "correctIndex": 0, "explanation": "Common ratio is 2 (each term = previous * 2). Next term = 64 * 2 = 128."}, {"question": "What is the next term in this arithmetic sequence: 8, 13, 18, 23, ...?", "choices": ["18", "33", "28", "37.38"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 23 + 5 = 28."}, {"question": "What is the next term in this geometric sequence: 6, 18, 54, 162, ...?", "choices": ["162", "486", "174", "487"], "correctIndex": 1, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 162 * 3 = 486."}, {"question": "What is the next term in this arithmetic sequence: 1, 6, 11, 16, ...?", "choices": ["96", "11", "21", "26"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 16 + 5 = 21."}, {"question": "What is the next term in this arithmetic sequence: 4, 2, 0, -2, ...?", "choices": ["-6", "-1", "-4", "0"], "correctIndex": 2, "explanation": "Common difference is -2 (each term = previous + -2). Next term = -2 + -2 = -4."}, {"question": "What is the next term in this arithmetic sequence: 5, 10, 15, 20, ...?", "choices": ["30", "15", "25", "40"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 20 + 5 = 25."}, {"question": "What is the next term in this arithmetic sequence: 1, -2, -5, -8, ...?", "choices": ["16", "-14", "-5", "-11"], "correctIndex": 3, "explanation": "Common difference is -3 (each term = previous + -3). Next term = -8 + -3 = -11."}, {"question": "What is the next term in this arithmetic sequence: 7, 12, 17, 22, ...?", "choices": ["32", "37.71", "27", "17"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 22 + 5 = 27."}, {"question": "What is the next term in this arithmetic sequence: 3, 8, 13, 18, ...?", "choices": ["13", "28", "48", "23"], "correctIndex": 3, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 18 + 5 = 23."}, {"question": "What is the next term in this geometric sequence: 5, 15, 45, 135, ...?", "choices": ["145", "135", "405", "406"], "correctIndex": 2, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 135 * 3 = 405."}, {"question": "What is the next term in this geometric sequence: 4, 8, 16, 32, ...?", "choices": ["65", "36", "32", "64"], "correctIndex": 3, "explanation": "Common ratio is 2 (each term = previous * 2). Next term = 32 * 2 = 64."}, {"question": "What is the next term in this arithmetic sequence: 1, -1, -3, -5, ...?", "choices": ["5", "-7", "-9", "-3"], "correctIndex": 1, "explanation": "Common difference is -2 (each term = previous + -2). Next term = -5 + -2 = -7."}, {"question": "What is the next term in this arithmetic sequence: 9, 11, 13, 15, ...?", "choices": ["13", "19", "17", "18.33"], "correctIndex": 2, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 15 + 2 = 17."}, {"question": "What is the next term in this arithmetic sequence: 7, 9, 11, 13, ...?", "choices": ["11", "15", "17", "16.71"], "correctIndex": 1, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 13 + 2 = 15."}, {"question": "What is the next term in this arithmetic sequence: 7, 4, 1, -2, ...?", "choices": ["1", "-5", "-1.14", "-8"], "correctIndex": 1, "explanation": "Common difference is -3 (each term = previous + -3). Next term = -2 + -3 = -5."}, {"question": "What is the next term in this geometric sequence: 4, 12, 36, 108, ...?", "choices": ["108", "116", "324", "325"], "correctIndex": 2, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 108 * 3 = 324."}, {"question": "Is this sequence arithmetic or geometric: 5, 8, 11, 14, ...?", "choices": ["neither", "arithmetic", "geometric", "both"], "correctIndex": 1, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as arithmetic."}, {"question": "Is this sequence arithmetic or geometric: 2, 6, 18, 54, ...?", "choices": ["neither", "both", "arithmetic", "geometric"], "correctIndex": 3, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as geometric."}, {"question": "Is this sequence arithmetic or geometric: 100, 90, 80, 70, ...?", "choices": ["geometric", "both", "neither", "arithmetic"], "correctIndex": 3, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as arithmetic."}, {"question": "Is this sequence arithmetic or geometric: 3, -6, 12, -24, ...?", "choices": ["both", "arithmetic", "geometric", "neither"], "correctIndex": 2, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as geometric."}]}, "abs_value_inequalities": {"name": "Absolute Value Inequalities", "lesson": "**Absolute value inequalities -- the long method**\n\n|x - b| <= c means \"the distance between x and b is at most c.\"\n\nLong method: drop the bars and write a compound inequality:\n    -c <= x - b <= c\nThen solve for x by doing the SAME operation to all three parts.\n\nWhen do you flip the inequality sign? ONLY when you multiply or divide all\nparts by a NEGATIVE number. It has nothing to do with absolute value itself\n-- it's just the normal inequality rule. Example: |-2x + 3| <= 7 becomes\n-7 <= -2x + 3 <= 7, then -10 <= -2x <= 4, and dividing by -2 flips BOTH\nsigns: 5 >= x >= -2, i.e. -2 <= x <= 5.\n\nCounting integer solutions: once you have a <= x <= b, count is b - a + 1\n(inclusive). If the inequality is strict (< instead of <=), the endpoints\nare excluded.\n", "flashcards": [{"front": "What does |x - b| <= c mean in words?", "back": "The distance between x and b is at most c."}, {"front": "When do you flip an inequality sign?", "back": "Only when multiplying or dividing all parts by a negative number."}, {"front": "How many integers satisfy -2 <= x <= 10?", "back": "13 (10 - (-2) + 1 = 13)."}, {"front": "If the inequality is strict (< instead of <=), what happens to the endpoints?", "back": "They're excluded from the solution set."}, {"front": "First step to solve |x - b| <= c?", "back": "Drop the bars and write the compound inequality: -c <= x - b <= c."}], "bank": [{"question": "How many integers satisfy |x - -6| <= 5?", "choices": ["12", "10", "11", "5"], "correctIndex": 2, "explanation": "Rewrite as -5 <= x - -6 <= 5, then add -6 to all parts: -11 <= x <= -1. Endpoints included. Count = 11."}, {"question": "How many integers satisfy |x - 1| < 11?", "choices": ["22", "21", "19", "11"], "correctIndex": 1, "explanation": "Rewrite as -11 < x - 1 < 11, then add 1 to all parts: -10 < x < 12. Endpoints excluded since strict. Count = 21."}, {"question": "How many integers satisfy |x - -4| < 6?", "choices": ["12", "9", "6", "11"], "correctIndex": 3, "explanation": "Rewrite as -6 < x - -4 < 6, then add -4 to all parts: -10 < x < 2. Endpoints excluded since strict. Count = 11."}, {"question": "How many integers satisfy |x - 0| < 6?", "choices": ["9", "12", "11", "6"], "correctIndex": 2, "explanation": "Rewrite as -6 < x - 0 < 6, then add 0 to all parts: -6 < x < 6. Endpoints excluded since strict. Count = 11."}, {"question": "How many integers satisfy |x - 8| <= 9?", "choices": ["9", "18", "20", "19"], "correctIndex": 3, "explanation": "Rewrite as -9 <= x - 8 <= 9, then add 8 to all parts: -1 <= x <= 17. Endpoints included. Count = 19."}, {"question": "How many integers satisfy |x - 0| < 2?", "choices": ["1", "4", "3", "2"], "correctIndex": 2, "explanation": "Rewrite as -2 < x - 0 < 2, then add 0 to all parts: -2 < x < 2. Endpoints excluded since strict. Count = 3."}, {"question": "How many integers satisfy |x - -3| <= 9?", "choices": ["18", "9", "20", "19"], "correctIndex": 3, "explanation": "Rewrite as -9 <= x - -3 <= 9, then add -3 to all parts: -12 <= x <= 6. Endpoints included. Count = 19."}, {"question": "How many integers satisfy |x - -4| < 10?", "choices": ["20", "19", "17", "10"], "correctIndex": 1, "explanation": "Rewrite as -10 < x - -4 < 10, then add -4 to all parts: -14 < x < 6. Endpoints excluded since strict. Count = 19."}, {"question": "How many integers satisfy |x - 5| < 4?", "choices": ["5", "7", "8", "4"], "correctIndex": 1, "explanation": "Rewrite as -4 < x - 5 < 4, then add 5 to all parts: 1 < x < 9. Endpoints excluded since strict. Count = 7."}, {"question": "How many integers satisfy |x - 3| < 5?", "choices": ["7", "5", "10", "9"], "correctIndex": 3, "explanation": "Rewrite as -5 < x - 3 < 5, then add 3 to all parts: -2 < x < 8. Endpoints excluded since strict. Count = 9."}, {"question": "How many integers satisfy |x - -4| < 5?", "choices": ["5", "9", "7", "10"], "correctIndex": 1, "explanation": "Rewrite as -5 < x - -4 < 5, then add -4 to all parts: -9 < x < 1. Endpoints excluded since strict. Count = 9."}, {"question": "How many integers satisfy |x - -3| <= 7?", "choices": ["7", "15", "16", "14"], "correctIndex": 1, "explanation": "Rewrite as -7 <= x - -3 <= 7, then add -3 to all parts: -10 <= x <= 4. Endpoints included. Count = 15."}, {"question": "How many integers satisfy |x - -5| < 8?", "choices": ["16", "8", "15", "13"], "correctIndex": 2, "explanation": "Rewrite as -8 < x - -5 < 8, then add -5 to all parts: -13 < x < 3. Endpoints excluded since strict. Count = 15."}, {"question": "How many integers satisfy |x - 6| <= 7?", "choices": ["16", "7", "15", "14"], "correctIndex": 2, "explanation": "Rewrite as -7 <= x - 6 <= 7, then add 6 to all parts: -1 <= x <= 13. Endpoints included. Count = 15."}, {"question": "How many integers satisfy |x - -2| <= 8?", "choices": ["18", "16", "17", "8"], "correctIndex": 2, "explanation": "Rewrite as -8 <= x - -2 <= 8, then add -2 to all parts: -10 <= x <= 6. Endpoints included. Count = 17."}, {"question": "How many integers satisfy |x - 3| <= 12?", "choices": ["24", "26", "25", "12"], "correctIndex": 2, "explanation": "Rewrite as -12 <= x - 3 <= 12, then add 3 to all parts: -9 <= x <= 15. Endpoints included. Count = 25."}, {"question": "Solve for x: |2x + -2| <= 5", "choices": ["x <= 7/2", "-3/2 >= x >= 7/2", "-3/2 <= x <= 7/2 (alt 1)", "-3/2 <= x <= 7/2"], "correctIndex": 3, "explanation": "-5 <= 2x + -2 <= 5, so -3 <= 2x <= 7. Dividing by 2 (positive, no flip needed): -3/2 <= x <= 7/2."}, {"question": "Solve for x: |3x + -1| <= 8", "choices": ["x <= 3", "-7/3 <= x <= 3 (alt 1)", "-7/3 >= x >= 3", "-7/3 <= x <= 3"], "correctIndex": 3, "explanation": "-8 <= 3x + -1 <= 8, so -7 <= 3x <= 9. Dividing by 3 (positive, no flip needed): -7/3 <= x <= 3."}, {"question": "Solve for x: |3x + -2| <= 3", "choices": ["-1/3 >= x >= 5/3", "-1/3 <= x <= 5/3 (alt 1)", "x <= 5/3", "-1/3 <= x <= 5/3"], "correctIndex": 3, "explanation": "-3 <= 3x + -2 <= 3, so -1 <= 3x <= 5. Dividing by 3 (positive, no flip needed): -1/3 <= x <= 5/3."}, {"question": "Solve for x: |-2x + -1| <= 9", "choices": ["-5 <= x <= 4", "4 <= x <= -5", "x <= 4", "-5 >= x >= 4"], "correctIndex": 0, "explanation": "-9 <= -2x + -1 <= 9, so -8 <= -2x <= 10. Dividing by -2 flips both inequality signs since it is negative: -5 <= x <= 4."}, {"question": "Solve for x: |2x + 4| <= 4", "choices": ["-4 <= x <= 0", "-4 >= x >= 0", "-4 <= x <= 0 (alt 1)", "x <= 0"], "correctIndex": 0, "explanation": "-4 <= 2x + 4 <= 4, so -8 <= 2x <= 0. Dividing by 2 (positive, no flip needed): -4 <= x <= 0."}, {"question": "Solve for x: |2x + -1| <= 9", "choices": ["x <= 5", "-4 <= x <= 5 (alt 1)", "-4 <= x <= 5", "-4 >= x >= 5"], "correctIndex": 2, "explanation": "-9 <= 2x + -1 <= 9, so -8 <= 2x <= 10. Dividing by 2 (positive, no flip needed): -4 <= x <= 5."}]}, "prob_complement": {"name": "Probability: \"At Least One\" (Complement Trick)", "lesson": "**\"At least one\" probability -- the complement trick**\n\n\"At least one\" problems are much easier to solve as 1 - P(none), rather than\nadding up P(exactly 1) + P(exactly 2) + ... Whenever you see \"at least one,\"\nyour first move should be: find P(none happen), then subtract from 1.\n\nP(at least one success) = 1 - P(zero successes)\n\nThis works whether the draws are with or without replacement -- you just\nneed to correctly compute P(zero successes) for that scenario.\n", "flashcards": [{"front": "What should \"at least one\" trigger in your head?", "back": "Complement: compute 1 - P(none)."}, {"front": "Why is the complement approach faster for \"at least one\"?", "back": "Direct calculation requires adding P(exactly 1) + P(exactly 2) + ...; the complement is one calculation."}, {"front": "Formula: P(at least one success in several draws)?", "back": "1 - P(zero successes)."}], "bank": [{"question": "A bag has 13 items, 3 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["60/143", "3/13", "9/13", "83/143"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 60/143, so P(at least one) = 1 - 60/143 = 83/143."}, {"question": "A bag has 13 items, 2 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["2/13", "4/13", "55/78", "23/78"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 55/78, so P(at least one) = 1 - 55/78 = 23/78."}, {"question": "A bag has 9 items, 3 of which are defective. You draw 2, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["4/9", "1/3", "2/3", "5/9"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 4/9, so P(at least one) = 1 - 4/9 = 5/9."}, {"question": "A bag has 11 items, 2 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["2/11", "6/11", "27/55", "28/55"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 28/55, so P(at least one) = 1 - 28/55 = 27/55."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["7/22", "15/22", "5/12", "5/6"], "correctIndex": 1, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/22, so P(at least one) = 1 - 7/22 = 15/22."}, {"question": "A bag has 9 items, 3 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["5/21", "1/3", "1/1", "16/21"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 5/21, so P(at least one) = 1 - 5/21 = 16/21."}, {"question": "A bag has 11 items, 5 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["1115/1331", "216/1331", "1/1", "5/11"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 216/1331, so P(at least one) = 1 - 216/1331 = 1115/1331."}, {"question": "A bag has 13 items, 4 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["8/13", "4/13", "7/13", "6/13"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 6/13, so P(at least one) = 1 - 6/13 = 7/13."}, {"question": "A bag has 15 items, 4 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["4/5", "1331/3375", "4/15", "2044/3375"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 1331/3375, so P(at least one) = 1 - 1331/3375 = 2044/3375."}, {"question": "A bag has 10 items, 4 of which are defective. You draw 2, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["9/25", "4/5", "16/25", "2/5"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 9/25, so P(at least one) = 1 - 9/25 = 16/25."}, {"question": "A bag has 13 items, 4 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["729/2197", "12/13", "1468/2197", "4/13"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 729/2197, so P(at least one) = 1 - 729/2197 = 1468/2197."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["15/22", "7/22", "5/12", "5/6"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/22, so P(at least one) = 1 - 7/22 = 15/22."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["1/1", "37/44", "7/44", "5/12"], "correctIndex": 1, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/44, so P(at least one) = 1 - 7/44 = 37/44."}, {"question": "A bag has 9 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["1/6", "5/9", "5/6", "1/1"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 1/6, so P(at least one) = 1 - 1/6 = 5/6."}, {"question": "A bag has 14 items, 5 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["10/13", "1/1", "5/14", "3/13"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 3/13, so P(at least one) = 1 - 3/13 = 10/13."}]}, "prob_replacement": {"name": "Probability: With vs. Without Replacement", "lesson": "**With replacement vs. without replacement**\n\nWith replacement: each draw is independent. The denominator (total items)\nstays the SAME every draw.\n\nWithout replacement: the denominator shrinks by 1 each draw. If you removed\na \"success\" item, the numerator shrinks too on the next draw.\n\nMultiple draws in sequence use the AND rule: multiply the probability of\neach stage, using the updated (or unchanged) counts at each stage.\n\nTest-day habit: always ask \"does the problem say replaced / put back, or\nnot?\" If it doesn't say, without replacement is the safer ACT default\nassumption for drawing physical objects like marbles or slips of paper.\n", "flashcards": [{"front": "With replacement: does the denominator change between draws?", "back": "No -- it stays the same every draw."}, {"front": "Without replacement: what happens to the denominator each draw?", "back": "It shrinks by 1 each draw (and the numerator shrinks too if a success was removed)."}, {"front": "Rule for combining probabilities across sequential draws?", "back": "Multiply them (the AND rule), using updated counts at each stage."}, {"front": "If a problem doesn't specify replacement, what should you assume on the ACT?", "back": "Without replacement is the safer default for drawing physical objects."}], "bank": [{"question": "A bag has 6 red and 4 blue marbles (10 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["1/3", "9/25", "1/1", "3/5"], "correctIndex": 0, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 5/9 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/5 x 5/9 = 1/3."}, {"question": "A bag has 5 red and 4 blue marbles (9 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["5/9", "1/1", "25/81", "5/18"], "correctIndex": 2, "explanation": "First draw: P(red) = 5/9. Second draw: P(red) = 5/9 (same as before since the marble was replaced). Multiply: 5/9 x 5/9 = 25/81."}, {"question": "A bag has 3 red and 3 blue marbles (6 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["9/10", "1/2", "1/5", "1/4"], "correctIndex": 2, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 2/5 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 1/2 x 2/5 = 1/5."}, {"question": "A bag has 6 red and 3 blue marbles (9 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["5/12", "2/3", "4/9", "1/1"], "correctIndex": 2, "explanation": "First draw: P(red) = 2/3. Second draw: P(red) = 2/3 (same as before since the marble was replaced). Multiply: 2/3 x 2/3 = 4/9."}, {"question": "A bag has 5 red and 6 blue marbles (11 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["2/11", "5/11", "25/121", "10/11"], "correctIndex": 2, "explanation": "First draw: P(red) = 5/11. Second draw: P(red) = 5/11 (same as before since the marble was replaced). Multiply: 5/11 x 5/11 = 25/121."}, {"question": "A bag has 5 red and 6 blue marbles (11 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["25/121", "10/11", "2/11", "5/11"], "correctIndex": 0, "explanation": "First draw: P(red) = 5/11. Second draw: P(red) = 5/11 (same as before since the marble was replaced). Multiply: 5/11 x 5/11 = 25/121."}, {"question": "A bag has 2 red and 5 blue marbles (7 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["1/21", "4/7", "2/7", "4/49"], "correctIndex": 3, "explanation": "First draw: P(red) = 2/7. Second draw: P(red) = 2/7 (same as before since the marble was replaced). Multiply: 2/7 x 2/7 = 4/49."}, {"question": "A bag has 3 red and 5 blue marbles (8 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["37/56", "3/8", "9/64", "3/28"], "correctIndex": 3, "explanation": "First draw: P(red) = 3/8. Second draw: P(red) = 2/7 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/8 x 2/7 = 3/28."}, {"question": "A bag has 2 red and 2 blue marbles (4 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["5/6", "1/2", "1/4", "1/6"], "correctIndex": 3, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 1/3 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 1/2 x 1/3 = 1/6."}, {"question": "A bag has 2 red and 3 blue marbles (5 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["4/25", "2/5", "4/5", "1/10"], "correctIndex": 0, "explanation": "First draw: P(red) = 2/5. Second draw: P(red) = 2/5 (same as before since the marble was replaced). Multiply: 2/5 x 2/5 = 4/25."}, {"question": "A bag has 4 red and 6 blue marbles (10 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["2/15", "4/5", "4/25", "2/5"], "correctIndex": 2, "explanation": "First draw: P(red) = 2/5. Second draw: P(red) = 2/5 (same as before since the marble was replaced). Multiply: 2/5 x 2/5 = 4/25."}, {"question": "A bag has 5 red and 5 blue marbles (10 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["1/1", "1/4", "2/9", "1/2"], "correctIndex": 1, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 1/2 (same as before since the marble was replaced). Multiply: 1/2 x 1/2 = 1/4."}, {"question": "A bag has 3 red and 2 blue marbles (5 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["3/5", "9/25", "3/10", "1/1"], "correctIndex": 1, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 3/5 (same as before since the marble was replaced). Multiply: 3/5 x 3/5 = 9/25."}, {"question": "A bag has 6 red and 2 blue marbles (8 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["9/16", "3/4", "15/28", "1/1"], "correctIndex": 2, "explanation": "First draw: P(red) = 3/4. Second draw: P(red) = 5/7 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/4 x 5/7 = 15/28."}, {"question": "A bag has 6 red and 4 blue marbles (10 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["1/3", "9/25", "3/5", "1/1"], "correctIndex": 0, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 5/9 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/5 x 5/9 = 1/3."}]}, "prob_counting": {"name": "Probability: Counting-Disguised Problems", "lesson": "**Counting-disguised-as-probability (numbered slips)**\n\n\"Slips numbered 1 to N are in a bag\" problems are really counting problems\nwearing a probability costume. Steps:\n1. Correctly COUNT how many integers in the range satisfy the condition.\n2. Divide by the total number of slips.\n\nWatch for overlap traps: \"multiple of 3 OR multiple of 4\" requires\ninclusion-exclusion -- add the two counts, then SUBTRACT the double-counted\noverlap (multiples of both, i.e. multiples of the LCM of 3 and 4 = 12).\n\ncount(A or B) = count(A) + count(B) - count(A and B)\n", "flashcards": [{"front": "What kind of problem is \"numbered slips in a bag\" really testing?", "back": "Counting -- correctly count favorable outcomes, then divide by total."}, {"front": "Formula for \"multiple of A or multiple of B\" counting?", "back": "count(A) + count(B) - count(A and B), where A-and-B uses the LCM of A and B."}, {"front": "Why do you subtract the overlap in an \"or\" counting problem?", "back": "Numbers that are multiples of both got counted twice, once in each group."}], "bank": [{"question": "Slips numbered 1 to 30 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["17/30", "1/2", "1/15", "7/30"], "correctIndex": 1, "explanation": "Multiples of 4: 7. Multiples of 3: 10. Multiples of both (i.e. of LCM 12): 2, which got double-counted. (7 + 10 - 2) / 30 = 15/30 = 1/2."}, {"question": "Slips numbered 1 to 59 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 4?", "choices": ["33/59", "29/59", "19/59", "4/59"], "correctIndex": 1, "explanation": "Multiples of 3: 19. Multiples of 4: 14. Multiples of both (i.e. of LCM 12): 4, which got double-counted. (19 + 14 - 4) / 59 = 29/59 = 29/59."}, {"question": "Slips numbered 1 to 32 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 4?", "choices": ["3/16", "7/16", "1/32", "13/32"], "correctIndex": 3, "explanation": "Multiples of 5: 6. Multiples of 4: 8. Multiples of both (i.e. of LCM 20): 1, which got double-counted. (6 + 8 - 1) / 32 = 13/32 = 13/32."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["12/25", "2/25", "14/25", "6/25"], "correctIndex": 0, "explanation": "Multiples of 4: 12. Multiples of 3: 16. Multiples of both (i.e. of LCM 12): 4, which got double-counted. (12 + 16 - 4) / 50 = 24/50 = 12/25."}, {"question": "Slips numbered 1 to 43 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 4?", "choices": ["10/43", "31/43", "21/43 (alt 1)", "21/43"], "correctIndex": 3, "explanation": "Multiples of 2: 21. Multiples of 4: 10. Multiples of both (i.e. of LCM 4): 10, which got double-counted. (21 + 10 - 10) / 43 = 21/43 = 21/43."}, {"question": "Slips numbered 1 to 32 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["9/16", "1/2", "1/4", "1/16"], "correctIndex": 1, "explanation": "Multiples of 4: 8. Multiples of 3: 10. Multiples of both (i.e. of LCM 12): 2, which got double-counted. (8 + 10 - 2) / 32 = 16/32 = 1/2."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 2?", "choices": ["6/25", "1/2 (alt 1)", "37/50", "1/2"], "correctIndex": 3, "explanation": "Multiples of 4: 12. Multiples of 2: 25. Multiples of both (i.e. of LCM 4): 12, which got double-counted. (12 + 25 - 12) / 50 = 25/50 = 1/2."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 6?", "choices": ["8/25 (alt 1)", "12/25", "8/25", "4/25"], "correctIndex": 2, "explanation": "Multiples of 3: 16. Multiples of 6: 8. Multiples of both (i.e. of LCM 6): 8, which got double-counted. (16 + 8 - 8) / 50 = 16/50 = 8/25."}, {"question": "Slips numbered 1 to 49 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 2?", "choices": ["4/49", "9/49", "29/49", "33/49"], "correctIndex": 2, "explanation": "Multiples of 5: 9. Multiples of 2: 24. Multiples of both (i.e. of LCM 10): 4, which got double-counted. (9 + 24 - 4) / 49 = 29/49 = 29/49."}, {"question": "Slips numbered 1 to 21 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 7?", "choices": ["10/21", "3/7", "1/3", "1/21"], "correctIndex": 1, "explanation": "Multiples of 3: 7. Multiples of 7: 3. Multiples of both (i.e. of LCM 21): 1, which got double-counted. (7 + 3 - 1) / 21 = 9/21 = 3/7."}, {"question": "Slips numbered 1 to 59 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 4?", "choices": ["2/59", "23/59", "11/59", "25/59"], "correctIndex": 1, "explanation": "Multiples of 5: 11. Multiples of 4: 14. Multiples of both (i.e. of LCM 20): 2, which got double-counted. (11 + 14 - 2) / 59 = 23/59 = 23/59."}, {"question": "Slips numbered 1 to 21 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 3?", "choices": ["10/21", "2/3", "1/7", "17/21"], "correctIndex": 1, "explanation": "Multiples of 2: 10. Multiples of 3: 7. Multiples of both (i.e. of LCM 6): 3, which got double-counted. (10 + 7 - 3) / 21 = 14/21 = 2/3."}, {"question": "Slips numbered 1 to 33 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 5?", "choices": ["16/33", "19/33", "1/11", "2/3"], "correctIndex": 1, "explanation": "Multiples of 2: 16. Multiples of 5: 6. Multiples of both (i.e. of LCM 10): 3, which got double-counted. (16 + 6 - 3) / 33 = 19/33 = 19/33."}, {"question": "Slips numbered 1 to 57 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 5?", "choices": ["25/57", "14/57", "23/57", "2/57"], "correctIndex": 2, "explanation": "Multiples of 4: 14. Multiples of 5: 11. Multiples of both (i.e. of LCM 20): 2, which got double-counted. (14 + 11 - 2) / 57 = 23/57 = 23/57."}, {"question": "Slips numbered 1 to 42 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 7?", "choices": ["1/3", "13/42", "4/21", "1/42"], "correctIndex": 1, "explanation": "Multiples of 5: 8. Multiples of 7: 6. Multiples of both (i.e. of LCM 35): 1, which got double-counted. (8 + 6 - 1) / 42 = 13/42 = 13/42."}]}};
+const CONTENT = {"units_digit_powers": {"name": "Units Digit of High Powers", "lesson": "**Units digit of a number raised to a high power**\n\nYou never need to compute the actual (huge) number -- the units digit of a^n\ncycles in a short, predictable pattern based only on the units digit of a.\n\nCycle lengths by units digit of the base:\n- 0, 1, 5, 6 -> cycle length 1 (units digit never changes)\n- 4, 9 -> cycle length 2\n- 2, 3, 7, 8 -> cycle length 4 (this is the longest any cycle ever gets)\n\nHow to solve:\n1. Look only at the units digit of the base.\n2. Write out powers 1 through 4 of that digit to find the cycle.\n3. Divide the exponent by the cycle length. The remainder tells you which\n   position in the cycle to use.\n4. Gotcha: if the remainder is 0, use the LAST position in the cycle, not a\n   \"0th\" position. Example: 7^20 -> cycle is 7,9,3,1 (length 4).\n   20 / 4 = 5 remainder 0 -> use the 4th (last) position -> units digit 1.\n\nSanity check: if you haven't seen the pattern repeat by the 5th power, you've\nmade an arithmetic error -- 4 is the max possible cycle length.\n", "flashcards": [{"front": "Units digit cycle length for bases ending in 0, 1, 5, 6?", "back": "1 -- the units digit never changes."}, {"front": "Units digit cycle length for bases ending in 4 or 9?", "back": "2."}, {"front": "Units digit cycle length for bases ending in 2, 3, 7, or 8?", "back": "4 -- the longest possible cycle."}, {"front": "Cycle of units digits for a base ending in 3?", "back": "3, 9, 7, 1 -- then repeats."}, {"front": "Exponent divided by cycle length gives remainder 0. What position in the cycle do you use?", "back": "The LAST position in the cycle, not position 0."}, {"front": "What's the maximum possible units-digit cycle length, and what does it mean if you haven't seen a repeat by the 5th power?", "back": "Max is 4 -- if no repeat by then, you've made an error."}], "bank": [{"question": "What is the units digit of 2^8?", "choices": ["8", "2", "7", "6"], "correctIndex": 3, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 8 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 2^20?", "choices": ["7", "8", "6", "2"], "correctIndex": 2, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 20 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 3^15?", "choices": ["1", "3", "9", "7"], "correctIndex": 3, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 15 mod 4 = 3, so we use position 3 -> 7."}, {"question": "What is the units digit of 3^40?", "choices": ["3", "7", "1", "2"], "correctIndex": 2, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 40 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 7^23?", "choices": ["1", "9", "7", "3"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 23 mod 4 = 3, so we use position 3 -> 3."}, {"question": "What is the units digit of 7^20?", "choices": ["7", "2", "3", "1"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 20 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 8^27?", "choices": ["4", "6", "2", "8"], "correctIndex": 2, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 27 mod 4 = 3, so we use position 3 -> 2."}, {"question": "What is the units digit of 8^44?", "choices": ["8", "7", "6", "2"], "correctIndex": 2, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 44 mod 4 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 4^17?", "choices": ["4", "5", "6", "2"], "correctIndex": 0, "explanation": "4 ends in 4, whose units-digit cycle is 4, 6 (length 2). 17 mod 2 = 1, so we use position 1 -> 4."}, {"question": "What is the units digit of 4^30?", "choices": ["7", "9", "6", "4"], "correctIndex": 2, "explanation": "4 ends in 4, whose units-digit cycle is 4, 6 (length 2). 30 mod 2 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 9^13?", "choices": ["10", "1", "7", "9"], "correctIndex": 3, "explanation": "9 ends in 9, whose units-digit cycle is 9, 1 (length 2). 13 mod 2 = 1, so we use position 1 -> 9."}, {"question": "What is the units digit of 9^18?", "choices": ["-1", "2", "9", "1"], "correctIndex": 3, "explanation": "9 ends in 9, whose units-digit cycle is 9, 1 (length 2). 18 mod 2 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 6^21?", "choices": ["9", "7", "6", "4"], "correctIndex": 2, "explanation": "6 ends in 6, whose units-digit cycle is 6 (length 1). 21 mod 1 = 0, so we use the last position in the cycle -> 6."}, {"question": "What is the units digit of 1^55?", "choices": ["-1", "4", "2", "1"], "correctIndex": 3, "explanation": "1 ends in 1, whose units-digit cycle is 1 (length 1). 55 mod 1 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 5^91?", "choices": ["5", "6", "8", "3"], "correctIndex": 0, "explanation": "5 ends in 5, whose units-digit cycle is 5 (length 1). 91 mod 1 = 0, so we use the last position in the cycle -> 5."}, {"question": "What is the units digit of 0^12?", "choices": ["3", "0", "-2", "1"], "correctIndex": 1, "explanation": "0 ends in 0, whose units-digit cycle is 0 (length 1). 12 mod 1 = 0, so we use the last position in the cycle -> 0."}, {"question": "What is the units digit of 2^51?", "choices": ["6", "2", "4", "8"], "correctIndex": 3, "explanation": "2 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 51 mod 4 = 3, so we use position 3 -> 8."}, {"question": "What is the units digit of 3^100?", "choices": ["3", "2", "1", "7"], "correctIndex": 2, "explanation": "3 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 100 mod 4 = 0, so we use the last position in the cycle -> 1."}, {"question": "What is the units digit of 7^99?", "choices": ["7", "9", "1", "3"], "correctIndex": 3, "explanation": "7 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 99 mod 4 = 3, so we use position 3 -> 3."}, {"question": "What is the units digit of 8^63?", "choices": ["2", "6", "4", "8"], "correctIndex": 0, "explanation": "8 ends in 8, whose units-digit cycle is 8, 4, 2, 6 (length 4). 63 mod 4 = 3, so we use position 3 -> 2."}, {"question": "What is the units digit of 12^34?", "choices": ["4", "2", "5", "8"], "correctIndex": 0, "explanation": "12 ends in 2, whose units-digit cycle is 2, 4, 8, 6 (length 4). 34 mod 4 = 2, so we use position 2 -> 4."}, {"question": "What is the units digit of 13^27?", "choices": ["7", "3", "9", "1"], "correctIndex": 0, "explanation": "13 ends in 3, whose units-digit cycle is 3, 9, 7, 1 (length 4). 27 mod 4 = 3, so we use position 3 -> 7."}, {"question": "What is the units digit of 17^45?", "choices": ["9", "8", "1", "7"], "correctIndex": 3, "explanation": "17 ends in 7, whose units-digit cycle is 7, 9, 3, 1 (length 4). 45 mod 4 = 1, so we use position 1 -> 7."}, {"question": "What is the units digit of 24^19?", "choices": ["5", "2", "4", "6"], "correctIndex": 2, "explanation": "24 ends in 4, whose units-digit cycle is 4, 6 (length 2). 19 mod 2 = 1, so we use position 1 -> 4."}]}, "gcf_lcm": {"name": "GCF & LCM Tricks (and Telling Them Apart)", "lesson": "**GCF trick, LCM trick, and telling them apart**\n\nGCF trick: for unequal integers a and b, GCF(a,b) must divide |a-b|. Find\n|a-b| first, list ITS factors, then test from largest to smallest against\nboth original numbers.\n\nLCM trick: just list multiples of the larger number and check them against\nthe smaller number -- for ACT-sized numbers this is usually faster than the\n\"multiply then divide by GCF\" formula.\n\nThe distinction that trips people up:\n- GCF (Greatest Common FACTOR) divides INTO both numbers -- always <= the\n  smaller number. It should feel SMALL.\n- LCM (Least Common Multiple) is divided INTO BY both numbers -- always >=\n  the larger number. It should feel BIG.\n\nGut check on test day: if your GCF answer is bigger than the smaller number,\nor your LCM answer is smaller than the larger number, you mixed them up.\n", "flashcards": [{"front": "GCF trick: what must the GCF of a and b divide?", "back": "|a - b| -- the absolute value of their difference."}, {"front": "Fastest way to find LCM of two ACT-sized numbers?", "back": "List multiples of the larger number and check against the smaller one."}, {"front": "Should a GCF answer feel big or small?", "back": "Small -- it can never exceed the smaller of the two numbers."}, {"front": "Should an LCM answer feel big or small?", "back": "Big -- it can never be less than the larger of the two numbers."}, {"front": "Gut-check rule to catch a GCF/LCM mix-up", "back": "GCF <= smaller number; LCM >= larger number. If it doesn't fit, you swapped them."}], "bank": [{"question": "What is the LCM of 85 and 68?", "choices": ["17", "340", "85", "5780"], "correctIndex": 1, "explanation": "Listing multiples of 85 until one is also a multiple of 68 gives 340. (Note 17 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 24 and 36?", "choices": ["12", "864", "36", "72"], "correctIndex": 3, "explanation": "Listing multiples of 36 until one is also a multiple of 24 gives 72. (Note 12 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 18 and 30?", "choices": ["540", "90", "6", "30"], "correctIndex": 1, "explanation": "Listing multiples of 30 until one is also a multiple of 18 gives 90. (Note 6 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 45 and 27?", "choices": ["27", "135", "9", "18"], "correctIndex": 2, "explanation": "|45-27| = 18. Testing its factors against both numbers, the largest one that divides both 45 and 27 is 9. (Note 135 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 56 and 42?", "choices": ["2352", "14", "168", "56"], "correctIndex": 2, "explanation": "Listing multiples of 56 until one is also a multiple of 42 gives 168. (Note 14 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 63 and 84?", "choices": ["21", "22", "63", "252"], "correctIndex": 0, "explanation": "|63-84| = 21. Testing its factors against both numbers, the largest one that divides both 63 and 84 is 21. (Note 252 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 13 and 91?", "choices": ["1183", "91", "13", "92"], "correctIndex": 1, "explanation": "Listing multiples of 91 until one is also a multiple of 13 gives 91. (Note 13 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 48 and 60?", "choices": ["240", "48", "12", "13"], "correctIndex": 2, "explanation": "|48-60| = 12. Testing its factors against both numbers, the largest one that divides both 48 and 60 is 12. (Note 240 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 72 and 90?", "choices": ["19", "18", "72", "360"], "correctIndex": 1, "explanation": "|72-90| = 18. Testing its factors against both numbers, the largest one that divides both 72 and 90 is 18. (Note 360 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 33 and 55?", "choices": ["55", "1815", "11", "165"], "correctIndex": 3, "explanation": "Listing multiples of 55 until one is also a multiple of 33 gives 165. (Note 11 is the GCF, a common mix-up.)"}, {"question": "What is the LCM of 14 and 35?", "choices": ["7", "70", "35", "490"], "correctIndex": 1, "explanation": "Listing multiples of 35 until one is also a multiple of 14 gives 70. (Note 7 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 28 and 42?", "choices": ["14", "84", "15", "28"], "correctIndex": 0, "explanation": "|28-42| = 14. Testing its factors against both numbers, the largest one that divides both 28 and 42 is 14. (Note 84 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 17 and 51?", "choices": ["18", "17", "51", "34"], "correctIndex": 1, "explanation": "|17-51| = 34. Testing its factors against both numbers, the largest one that divides both 17 and 51 is 17. (Note 51 is the LCM, a common mix-up.)"}, {"question": "What is the LCM of 39 and 65?", "choices": ["65", "13", "2535", "195"], "correctIndex": 3, "explanation": "Listing multiples of 65 until one is also a multiple of 39 gives 195. (Note 13 is the GCF, a common mix-up.)"}, {"question": "What is the GCF of 22 and 55?", "choices": ["22", "110", "33", "11"], "correctIndex": 3, "explanation": "|22-55| = 33. Testing its factors against both numbers, the largest one that divides both 22 and 55 is 11. (Note 110 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 26 and 65?", "choices": ["39", "13", "26", "130"], "correctIndex": 1, "explanation": "|26-65| = 39. Testing its factors against both numbers, the largest one that divides both 26 and 65 is 13. (Note 130 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 36 and 60?", "choices": ["36", "12", "180", "24"], "correctIndex": 1, "explanation": "|36-60| = 24. Testing its factors against both numbers, the largest one that divides both 36 and 60 is 12. (Note 180 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 54 and 90?", "choices": ["54", "18", "270", "36"], "correctIndex": 1, "explanation": "|54-90| = 36. Testing its factors against both numbers, the largest one that divides both 54 and 90 is 18. (Note 270 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 21 and 49?", "choices": ["21", "7", "28", "147"], "correctIndex": 1, "explanation": "|21-49| = 28. Testing its factors against both numbers, the largest one that divides both 21 and 49 is 7. (Note 147 is the LCM, a common mix-up.)"}, {"question": "What is the GCF of 44 and 66?", "choices": ["132", "44", "22", "23"], "correctIndex": 2, "explanation": "|44-66| = 22. Testing its factors against both numbers, the largest one that divides both 44 and 66 is 22. (Note 132 is the LCM, a common mix-up.)"}, {"question": "Which statement is always true for two different positive integers a and b?", "choices": ["GCF(a,b) is less than or equal to the smaller of a and b", "GCF(a,b) and LCM(a,b) are always equal", "GCF(a,b) is always greater than LCM(a,b)", "LCM(a,b) is less than or equal to the smaller of a and b"], "correctIndex": 0, "explanation": "GCF can never exceed the smaller number; LCM can never be smaller than the larger number."}, {"question": "Which statement is always true for two different positive integers a and b?", "choices": ["LCM(a,b) is greater than or equal to the larger of a and b", "GCF(a,b) is greater than or equal to the larger of a and b", "LCM(a,b) equals a - b", "LCM(a,b) is less than a and b"], "correctIndex": 0, "explanation": "LCM must be a multiple of both numbers, so it can never be smaller than the larger one."}, {"question": "A student says the GCF of 18 and 24 is 72. What went wrong?", "choices": ["They forgot to divide by 2", "They calculated the LCM instead of the GCF", "72 is actually correct", "They calculated a - b instead"], "correctIndex": 1, "explanation": "72 is the LCM of 18 and 24 (the GCF is 6). This is the classic GCF/LCM swap."}]}, "arith_geo_sequences": {"name": "Arithmetic vs. Geometric Sequences", "lesson": "**Arithmetic vs. geometric sequences**\n\nArithmetic sequence: constant DIFFERENCE between consecutive terms (add/\nsubtract the same number each time). a_n = a_1 + (n-1)d\n\nGeometric sequence: constant RATIO between consecutive terms (multiply by\nthe same number each time). a_n = a_1 * r^(n-1)\n\nQuick test: is the GAP between terms constant (arithmetic), or is the RATIO\nbetween terms constant (geometric)? Check both before assuming.\n", "flashcards": [{"front": "What stays constant in an arithmetic sequence?", "back": "The difference between consecutive terms."}, {"front": "What stays constant in a geometric sequence?", "back": "The ratio between consecutive terms."}, {"front": "Formula for the nth term of an arithmetic sequence?", "back": "a_n = a_1 + (n-1)d"}, {"front": "Formula for the nth term of a geometric sequence?", "back": "a_n = a_1 * r^(n-1)"}, {"front": "Fastest way to tell which type a sequence is?", "back": "Check if consecutive terms have a constant gap (arithmetic) or constant ratio (geometric)."}, {"front": "Formula for the sum of the first n terms of an arithmetic sequence?", "back": "S_n = n/2 * (2a_1 + (n-1)d), or equivalently n times the average of the first and last term."}, {"front": "Formula for the sum of the first n terms of a geometric sequence (r != 1)?", "back": "S_n = a_1 * (r^n - 1) / (r - 1)."}, {"front": "You know a_3 and a_7 of an arithmetic sequence but not a_1. How do you find the common difference?", "back": "d = (a_7 - a_3) / (7 - 3) -- divide the difference in terms by the difference in their positions."}], "bank": [{"question": "What is the next term in this geometric sequence: 7, -14, 28, -56, ...?", "choices": ["112", "113", "-77", "-56"], "correctIndex": 0, "explanation": "Common ratio is -2 (each term = previous * -2). Next term = -56 * -2 = 112."}, {"question": "What is the next term in this arithmetic sequence: 4, 7, 10, 13, ...?", "choices": ["19", "10", "22.75", "16"], "correctIndex": 3, "explanation": "Common difference is 3 (each term = previous + 3). Next term = 13 + 3 = 16."}, {"question": "What is the next term in this arithmetic sequence: 4, 6, 8, 10, ...?", "choices": ["15", "8", "14", "12"], "correctIndex": 3, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 10 + 2 = 12."}, {"question": "What is the next term in this arithmetic sequence: 2, 4, 6, 8, ...?", "choices": ["16", "6", "10", "12"], "correctIndex": 2, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 8 + 2 = 10."}, {"question": "What is the next term in this geometric sequence: 8, 16, 32, 64, ...?", "choices": ["128", "129", "64", "72"], "correctIndex": 0, "explanation": "Common ratio is 2 (each term = previous * 2). Next term = 64 * 2 = 128."}, {"question": "What is the next term in this arithmetic sequence: 8, 13, 18, 23, ...?", "choices": ["18", "33", "28", "37.38"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 23 + 5 = 28."}, {"question": "What is the next term in this geometric sequence: 6, 18, 54, 162, ...?", "choices": ["162", "486", "174", "487"], "correctIndex": 1, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 162 * 3 = 486."}, {"question": "What is the next term in this arithmetic sequence: 1, 6, 11, 16, ...?", "choices": ["96", "11", "21", "26"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 16 + 5 = 21."}, {"question": "What is the next term in this arithmetic sequence: 4, 2, 0, -2, ...?", "choices": ["-6", "-1", "-4", "0"], "correctIndex": 2, "explanation": "Common difference is -2 (each term = previous + -2). Next term = -2 + -2 = -4."}, {"question": "What is the next term in this arithmetic sequence: 5, 10, 15, 20, ...?", "choices": ["30", "15", "25", "40"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 20 + 5 = 25."}, {"question": "What is the next term in this arithmetic sequence: 1, -2, -5, -8, ...?", "choices": ["16", "-14", "-5", "-11"], "correctIndex": 3, "explanation": "Common difference is -3 (each term = previous + -3). Next term = -8 + -3 = -11."}, {"question": "What is the next term in this arithmetic sequence: 7, 12, 17, 22, ...?", "choices": ["32", "37.71", "27", "17"], "correctIndex": 2, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 22 + 5 = 27."}, {"question": "What is the next term in this arithmetic sequence: 3, 8, 13, 18, ...?", "choices": ["13", "28", "48", "23"], "correctIndex": 3, "explanation": "Common difference is 5 (each term = previous + 5). Next term = 18 + 5 = 23."}, {"question": "What is the next term in this geometric sequence: 5, 15, 45, 135, ...?", "choices": ["145", "135", "405", "406"], "correctIndex": 2, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 135 * 3 = 405."}, {"question": "What is the next term in this geometric sequence: 4, 8, 16, 32, ...?", "choices": ["65", "36", "32", "64"], "correctIndex": 3, "explanation": "Common ratio is 2 (each term = previous * 2). Next term = 32 * 2 = 64."}, {"question": "What is the next term in this arithmetic sequence: 1, -1, -3, -5, ...?", "choices": ["5", "-7", "-9", "-3"], "correctIndex": 1, "explanation": "Common difference is -2 (each term = previous + -2). Next term = -5 + -2 = -7."}, {"question": "What is the next term in this arithmetic sequence: 9, 11, 13, 15, ...?", "choices": ["13", "19", "17", "18.33"], "correctIndex": 2, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 15 + 2 = 17."}, {"question": "What is the next term in this arithmetic sequence: 7, 9, 11, 13, ...?", "choices": ["11", "15", "17", "16.71"], "correctIndex": 1, "explanation": "Common difference is 2 (each term = previous + 2). Next term = 13 + 2 = 15."}, {"question": "What is the next term in this arithmetic sequence: 7, 4, 1, -2, ...?", "choices": ["1", "-5", "-1.14", "-8"], "correctIndex": 1, "explanation": "Common difference is -3 (each term = previous + -3). Next term = -2 + -3 = -5."}, {"question": "What is the next term in this geometric sequence: 4, 12, 36, 108, ...?", "choices": ["108", "116", "324", "325"], "correctIndex": 2, "explanation": "Common ratio is 3 (each term = previous * 3). Next term = 108 * 3 = 324."}, {"question": "Is this sequence arithmetic or geometric: 5, 8, 11, 14, ...?", "choices": ["neither", "arithmetic", "geometric", "both"], "correctIndex": 1, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as arithmetic."}, {"question": "Is this sequence arithmetic or geometric: 2, 6, 18, 54, ...?", "choices": ["neither", "both", "arithmetic", "geometric"], "correctIndex": 3, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as geometric."}, {"question": "Is this sequence arithmetic or geometric: 100, 90, 80, 70, ...?", "choices": ["geometric", "both", "neither", "arithmetic"], "correctIndex": 3, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as arithmetic."}, {"question": "Is this sequence arithmetic or geometric: 3, -6, 12, -24, ...?", "choices": ["both", "arithmetic", "geometric", "neither"], "correctIndex": 2, "explanation": "Checking gaps vs. ratios between consecutive terms identifies it as geometric."}, {"question": "An arithmetic sequence has first term a_1 = 4 and common difference -3. What is a_11?", "choices": ["34", "-23", "-26", "-29"], "correctIndex": 2, "explanation": "a_n = a_1 + (n-1)d. a_11 = 4 + (11-1)(-3) = 4 + -30 = -26. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "An arithmetic sequence has first term a_1 = -4 and common difference 3. What is a_12?", "choices": ["32", "29", "26", "-37"], "correctIndex": 1, "explanation": "a_n = a_1 + (n-1)d. a_12 = -4 + (12-1)(3) = -4 + 33 = 29. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "An arithmetic sequence has first term a_1 = 7 and common difference 5. What is a_14?", "choices": ["72", "67", "-58", "77"], "correctIndex": 0, "explanation": "a_n = a_1 + (n-1)d. a_14 = 7 + (14-1)(5) = 7 + 65 = 72. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "An arithmetic sequence has first term a_1 = -2 and common difference 4. What is a_15?", "choices": ["54", "-58", "50", "58"], "correctIndex": 0, "explanation": "a_n = a_1 + (n-1)d. a_15 = -2 + (15-1)(4) = -2 + 56 = 54. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "An arithmetic sequence has first term a_1 = -6 and common difference 3. What is a_15?", "choices": ["-48", "36", "39", "33"], "correctIndex": 1, "explanation": "a_n = a_1 + (n-1)d. a_15 = -6 + (15-1)(3) = -6 + 42 = 36. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "An arithmetic sequence has first term a_1 = 0 and common difference 2. What is a_14?", "choices": ["24", "26", "-26", "28"], "correctIndex": 1, "explanation": "a_n = a_1 + (n-1)d. a_14 = 0 + (14-1)(2) = 0 + 26 = 26. A common mistake is using n instead of (n-1) as the multiplier."}, {"question": "A geometric sequence has first term a_1 = 3 and common ratio -3. What is a_5?", "choices": ["-729", "-81", "243", "-9"], "correctIndex": 2, "explanation": "a_n = a_1 * r^(n-1). a_5 = 3 * (-3)^4 = 243."}, {"question": "A geometric sequence has first term a_1 = -2 and common ratio 3. What is a_7?", "choices": ["-1458", "16", "-4374", "-486"], "correctIndex": 0, "explanation": "a_n = a_1 * r^(n-1). a_7 = -2 * (3)^6 = -1458."}, {"question": "A geometric sequence has first term a_1 = 32 and common ratio 1/2. What is a_7?", "choices": ["35", "1/4", "1/2", "1"], "correctIndex": 2, "explanation": "a_n = a_1 * r^(n-1). a_7 = 32 * (1/2)^6 = 1/2."}, {"question": "A geometric sequence has first term a_1 = -3 and common ratio 2. What is a_6?", "choices": ["-192", "-48", "-96", "7"], "correctIndex": 2, "explanation": "a_n = a_1 * r^(n-1). a_6 = -3 * (2)^5 = -96."}, {"question": "A geometric sequence has first term a_1 = 24 and common ratio 1/3. What is a_5?", "choices": ["8/9", "8/27", "76/3", "8/81"], "correctIndex": 1, "explanation": "a_n = a_1 * r^(n-1). a_5 = 24 * (1/3)^4 = 8/27."}, {"question": "A geometric sequence has first term a_1 = 2 and common ratio -3. What is a_5?", "choices": ["-54", "-486", "162", "-10"], "correctIndex": 2, "explanation": "a_n = a_1 * r^(n-1). a_5 = 2 * (-3)^4 = 162."}, {"question": "In an arithmetic sequence, a_4 = 13 and a_9 = 33. What is a_11?", "choices": ["41", "43", "53", "34"], "correctIndex": 0, "explanation": "Find d from the two known terms: d = (a_9 - a_4) / (9-4) = (33 - 13) / 5 = 4. Then a_11 = a_9 + (11-9) * d = 33 + 8 = 41."}, {"question": "In an arithmetic sequence, a_4 = 11 and a_7 = 26. What is a_12?", "choices": ["56", "43", "51", "66"], "correctIndex": 2, "explanation": "Find d from the two known terms: d = (a_7 - a_4) / (7-4) = (26 - 11) / 3 = 5. Then a_12 = a_7 + (12-7) * d = 26 + 25 = 51."}, {"question": "In an arithmetic sequence, a_2 = 0 and a_5 = 12. What is a_9?", "choices": ["21", "28 (alt 1)", "28", "32"], "correctIndex": 2, "explanation": "Find d from the two known terms: d = (a_5 - a_2) / (5-2) = (12 - 0) / 3 = 4. Then a_9 = a_5 + (9-5) * d = 12 + 16 = 28."}, {"question": "In a geometric sequence, a_1 = 3 and a_4 = 24. What is a_5?", "choices": ["-48", "45", "24", "48"], "correctIndex": 3, "explanation": "Dividing shows the ratio: r^3 = a_4/a_1 = 24/3, so r = 2. Then a_5 = a_4 * r^1 = 24 * 2^1 = 48."}, {"question": "In an arithmetic sequence, a_3 = 7 and a_6 = 13. What is a_10?", "choices": ["21", "14", "25", "21 (alt 1)"], "correctIndex": 0, "explanation": "Find d from the two known terms: d = (a_6 - a_3) / (6-3) = (13 - 7) / 3 = 2. Then a_10 = a_6 + (10-6) * d = 13 + 8 = 21."}, {"question": "In a geometric sequence, a_1 = 3 and a_3 = 27. What is a_4?", "choices": ["81", "51", "-81", "27"], "correctIndex": 0, "explanation": "Dividing shows the ratio: r^2 = a_3/a_1 = 27/3, so r = 3. Then a_4 = a_3 * r^1 = 27 * 3^1 = 81."}, {"question": "What is the sum of the first 7 terms of an arithmetic sequence with a_1 = 7 and common difference -2?", "choices": ["14", "7", "12", "-35"], "correctIndex": 1, "explanation": "S_n = n/2 * (2a_1 + (n-1)d) = 7/2 * (2*7 + 6*-2) = 7/2 * 2 = 7. (Equivalently, sum = n * average of first and last term: average of 7 and -5 times 7.)"}, {"question": "What is the sum of the first 6 terms of an arithmetic sequence with a_1 = 5 and common difference 4?", "choices": ["180", "65", "90", "150"], "correctIndex": 2, "explanation": "S_n = n/2 * (2a_1 + (n-1)d) = 6/2 * (2*5 + 5*4) = 6/2 * 30 = 90. (Equivalently, sum = n * average of first and last term: average of 5 and 25 times 6.)"}, {"question": "What is the sum of the first 9 terms of an arithmetic sequence with a_1 = 1 and common difference 4?", "choices": ["120", "297", "306", "153"], "correctIndex": 3, "explanation": "S_n = n/2 * (2a_1 + (n-1)d) = 9/2 * (2*1 + 8*4) = 9/2 * 34 = 153. (Equivalently, sum = n * average of first and last term: average of 1 and 33 times 9.)"}, {"question": "What is the sum of the first 10 terms of an arithmetic sequence with a_1 = -1 and common difference 2?", "choices": ["80", "160", "63", "170"], "correctIndex": 0, "explanation": "S_n = n/2 * (2a_1 + (n-1)d) = 10/2 * (2*-1 + 9*2) = 10/2 * 16 = 80. (Equivalently, sum = n * average of first and last term: average of -1 and 17 times 10.)"}, {"question": "What is the sum of the first 10 terms of an arithmetic sequence with a_1 = 7 and common difference -2?", "choices": ["-20", "-110", "-9", "-40"], "correctIndex": 0, "explanation": "S_n = n/2 * (2a_1 + (n-1)d) = 10/2 * (2*7 + 9*-2) = 10/2 * -4 = -20. (Equivalently, sum = n * average of first and last term: average of 7 and -11 times 10.)"}, {"question": "What is the sum of the first 6 terms of a geometric sequence with a_1 = -1 and common ratio 3?", "choices": ["-364", "-121", "-364 (alt 1)", "-243"], "correctIndex": 0, "explanation": "S_n = a_1 * (r^n - 1) / (r - 1) = -1 * ((3)^6 - 1) / (3 - 1) = -1 * (729 - 1) / 2 = -364."}, {"question": "What is the sum of the first 6 terms of a geometric sequence with a_1 = 4 and common ratio -2?", "choices": ["44", "-126", "-84", "-128"], "correctIndex": 2, "explanation": "S_n = a_1 * (r^n - 1) / (r - 1) = 4 * ((-2)^6 - 1) / (-2 - 1) = 4 * (64 - 1) / -3 = -84."}, {"question": "What is the sum of the first 5 terms of a geometric sequence with a_1 = 2 and common ratio 3?", "choices": ["162", "161", "80", "242"], "correctIndex": 3, "explanation": "S_n = a_1 * (r^n - 1) / (r - 1) = 2 * ((3)^5 - 1) / (3 - 1) = 2 * (243 - 1) / 2 = 242."}, {"question": "What is the sum of the first 4 terms of a geometric sequence with a_1 = 3 and common ratio -2?", "choices": ["-15", "-24", "9", "-23"], "correctIndex": 0, "explanation": "S_n = a_1 * (r^n - 1) / (r - 1) = 3 * ((-2)^4 - 1) / (-2 - 1) = 3 * (16 - 1) / -3 = -15."}, {"question": "What is the sum of the first 6 terms of a geometric sequence with a_1 = -1 and common ratio -2?", "choices": ["21", "-11", "32", "31"], "correctIndex": 0, "explanation": "S_n = a_1 * (r^n - 1) / (r - 1) = -1 * ((-2)^6 - 1) / (-2 - 1) = -1 * (64 - 1) / -3 = 21."}]}, "abs_value_inequalities": {"name": "Absolute Value Inequalities", "lesson": "**Absolute value inequalities -- the long method**\n\n|x - b| <= c means \"the distance between x and b is at most c.\"\n\nLong method: drop the bars and write a compound inequality:\n    -c <= x - b <= c\nThen solve for x by doing the SAME operation to all three parts.\n\nWhen do you flip the inequality sign? ONLY when you multiply or divide all\nparts by a NEGATIVE number. It has nothing to do with absolute value itself\n-- it's just the normal inequality rule. Example: |-2x + 3| <= 7 becomes\n-7 <= -2x + 3 <= 7, then -10 <= -2x <= 4, and dividing by -2 flips BOTH\nsigns: 5 >= x >= -2, i.e. -2 <= x <= 5.\n\nCounting integer solutions: once you have a <= x <= b, count is b - a + 1\n(inclusive). If the inequality is strict (< instead of <=), the endpoints\nare excluded.\n", "flashcards": [{"front": "What does |x - b| <= c mean in words?", "back": "The distance between x and b is at most c."}, {"front": "When do you flip an inequality sign?", "back": "Only when multiplying or dividing all parts by a negative number."}, {"front": "How many integers satisfy -2 <= x <= 10?", "back": "13 (10 - (-2) + 1 = 13)."}, {"front": "If the inequality is strict (< instead of <=), what happens to the endpoints?", "back": "They're excluded from the solution set."}, {"front": "First step to solve |x - b| <= c?", "back": "Drop the bars and write the compound inequality: -c <= x - b <= c."}], "bank": [{"question": "How many integers satisfy |x - -6| <= 5?", "choices": ["12", "10", "11", "5"], "correctIndex": 2, "explanation": "Rewrite as -5 <= x - -6 <= 5, then add -6 to all parts: -11 <= x <= -1. Endpoints included. Count = 11."}, {"question": "How many integers satisfy |x - 1| < 11?", "choices": ["22", "21", "19", "11"], "correctIndex": 1, "explanation": "Rewrite as -11 < x - 1 < 11, then add 1 to all parts: -10 < x < 12. Endpoints excluded since strict. Count = 21."}, {"question": "How many integers satisfy |x - -4| < 6?", "choices": ["12", "9", "6", "11"], "correctIndex": 3, "explanation": "Rewrite as -6 < x - -4 < 6, then add -4 to all parts: -10 < x < 2. Endpoints excluded since strict. Count = 11."}, {"question": "How many integers satisfy |x - 0| < 6?", "choices": ["9", "12", "11", "6"], "correctIndex": 2, "explanation": "Rewrite as -6 < x - 0 < 6, then add 0 to all parts: -6 < x < 6. Endpoints excluded since strict. Count = 11."}, {"question": "How many integers satisfy |x - 8| <= 9?", "choices": ["9", "18", "20", "19"], "correctIndex": 3, "explanation": "Rewrite as -9 <= x - 8 <= 9, then add 8 to all parts: -1 <= x <= 17. Endpoints included. Count = 19."}, {"question": "How many integers satisfy |x - 0| < 2?", "choices": ["1", "4", "3", "2"], "correctIndex": 2, "explanation": "Rewrite as -2 < x - 0 < 2, then add 0 to all parts: -2 < x < 2. Endpoints excluded since strict. Count = 3."}, {"question": "How many integers satisfy |x - -3| <= 9?", "choices": ["18", "9", "20", "19"], "correctIndex": 3, "explanation": "Rewrite as -9 <= x - -3 <= 9, then add -3 to all parts: -12 <= x <= 6. Endpoints included. Count = 19."}, {"question": "How many integers satisfy |x - -4| < 10?", "choices": ["20", "19", "17", "10"], "correctIndex": 1, "explanation": "Rewrite as -10 < x - -4 < 10, then add -4 to all parts: -14 < x < 6. Endpoints excluded since strict. Count = 19."}, {"question": "How many integers satisfy |x - 5| < 4?", "choices": ["5", "7", "8", "4"], "correctIndex": 1, "explanation": "Rewrite as -4 < x - 5 < 4, then add 5 to all parts: 1 < x < 9. Endpoints excluded since strict. Count = 7."}, {"question": "How many integers satisfy |x - 3| < 5?", "choices": ["7", "5", "10", "9"], "correctIndex": 3, "explanation": "Rewrite as -5 < x - 3 < 5, then add 3 to all parts: -2 < x < 8. Endpoints excluded since strict. Count = 9."}, {"question": "How many integers satisfy |x - -4| < 5?", "choices": ["5", "9", "7", "10"], "correctIndex": 1, "explanation": "Rewrite as -5 < x - -4 < 5, then add -4 to all parts: -9 < x < 1. Endpoints excluded since strict. Count = 9."}, {"question": "How many integers satisfy |x - -3| <= 7?", "choices": ["7", "15", "16", "14"], "correctIndex": 1, "explanation": "Rewrite as -7 <= x - -3 <= 7, then add -3 to all parts: -10 <= x <= 4. Endpoints included. Count = 15."}, {"question": "How many integers satisfy |x - -5| < 8?", "choices": ["16", "8", "15", "13"], "correctIndex": 2, "explanation": "Rewrite as -8 < x - -5 < 8, then add -5 to all parts: -13 < x < 3. Endpoints excluded since strict. Count = 15."}, {"question": "How many integers satisfy |x - 6| <= 7?", "choices": ["16", "7", "15", "14"], "correctIndex": 2, "explanation": "Rewrite as -7 <= x - 6 <= 7, then add 6 to all parts: -1 <= x <= 13. Endpoints included. Count = 15."}, {"question": "How many integers satisfy |x - -2| <= 8?", "choices": ["18", "16", "17", "8"], "correctIndex": 2, "explanation": "Rewrite as -8 <= x - -2 <= 8, then add -2 to all parts: -10 <= x <= 6. Endpoints included. Count = 17."}, {"question": "How many integers satisfy |x - 3| <= 12?", "choices": ["24", "26", "25", "12"], "correctIndex": 2, "explanation": "Rewrite as -12 <= x - 3 <= 12, then add 3 to all parts: -9 <= x <= 15. Endpoints included. Count = 25."}, {"question": "Solve for x: |2x + -2| <= 5", "choices": ["x <= 7/2", "-3/2 >= x >= 7/2", "-3/2 <= x <= 7/2 (alt 1)", "-3/2 <= x <= 7/2"], "correctIndex": 3, "explanation": "-5 <= 2x + -2 <= 5, so -3 <= 2x <= 7. Dividing by 2 (positive, no flip needed): -3/2 <= x <= 7/2."}, {"question": "Solve for x: |3x + -1| <= 8", "choices": ["x <= 3", "-7/3 <= x <= 3 (alt 1)", "-7/3 >= x >= 3", "-7/3 <= x <= 3"], "correctIndex": 3, "explanation": "-8 <= 3x + -1 <= 8, so -7 <= 3x <= 9. Dividing by 3 (positive, no flip needed): -7/3 <= x <= 3."}, {"question": "Solve for x: |3x + -2| <= 3", "choices": ["-1/3 >= x >= 5/3", "-1/3 <= x <= 5/3 (alt 1)", "x <= 5/3", "-1/3 <= x <= 5/3"], "correctIndex": 3, "explanation": "-3 <= 3x + -2 <= 3, so -1 <= 3x <= 5. Dividing by 3 (positive, no flip needed): -1/3 <= x <= 5/3."}, {"question": "Solve for x: |-2x + -1| <= 9", "choices": ["-5 <= x <= 4", "4 <= x <= -5", "x <= 4", "-5 >= x >= 4"], "correctIndex": 0, "explanation": "-9 <= -2x + -1 <= 9, so -8 <= -2x <= 10. Dividing by -2 flips both inequality signs since it is negative: -5 <= x <= 4."}, {"question": "Solve for x: |2x + 4| <= 4", "choices": ["-4 <= x <= 0", "-4 >= x >= 0", "-4 <= x <= 0 (alt 1)", "x <= 0"], "correctIndex": 0, "explanation": "-4 <= 2x + 4 <= 4, so -8 <= 2x <= 0. Dividing by 2 (positive, no flip needed): -4 <= x <= 0."}, {"question": "Solve for x: |2x + -1| <= 9", "choices": ["x <= 5", "-4 <= x <= 5 (alt 1)", "-4 <= x <= 5", "-4 >= x >= 5"], "correctIndex": 2, "explanation": "-9 <= 2x + -1 <= 9, so -8 <= 2x <= 10. Dividing by 2 (positive, no flip needed): -4 <= x <= 5."}]}, "prob_complement": {"name": "Probability: \"At Least One\" (Complement Trick)", "lesson": "**\"At least one\" probability -- the complement trick**\n\n\"At least one\" problems are much easier to solve as 1 - P(none), rather than\nadding up P(exactly 1) + P(exactly 2) + ... Whenever you see \"at least one,\"\nyour first move should be: find P(none happen), then subtract from 1.\n\nP(at least one success) = 1 - P(zero successes)\n\nThis works whether the draws are with or without replacement -- you just\nneed to correctly compute P(zero successes) for that scenario.\n", "flashcards": [{"front": "What should \"at least one\" trigger in your head?", "back": "Complement: compute 1 - P(none)."}, {"front": "Why is the complement approach faster for \"at least one\"?", "back": "Direct calculation requires adding P(exactly 1) + P(exactly 2) + ...; the complement is one calculation."}, {"front": "Formula: P(at least one success in several draws)?", "back": "1 - P(zero successes)."}], "bank": [{"question": "A bag has 13 items, 3 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["60/143", "3/13", "9/13", "83/143"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 60/143, so P(at least one) = 1 - 60/143 = 83/143."}, {"question": "A bag has 13 items, 2 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["2/13", "4/13", "55/78", "23/78"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 55/78, so P(at least one) = 1 - 55/78 = 23/78."}, {"question": "A bag has 9 items, 3 of which are defective. You draw 2, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["4/9", "1/3", "2/3", "5/9"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 4/9, so P(at least one) = 1 - 4/9 = 5/9."}, {"question": "A bag has 11 items, 2 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["2/11", "6/11", "27/55", "28/55"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 28/55, so P(at least one) = 1 - 28/55 = 27/55."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["7/22", "15/22", "5/12", "5/6"], "correctIndex": 1, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/22, so P(at least one) = 1 - 7/22 = 15/22."}, {"question": "A bag has 9 items, 3 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["5/21", "1/3", "1/1", "16/21"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 5/21, so P(at least one) = 1 - 5/21 = 16/21."}, {"question": "A bag has 11 items, 5 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["1115/1331", "216/1331", "1/1", "5/11"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 216/1331, so P(at least one) = 1 - 216/1331 = 1115/1331."}, {"question": "A bag has 13 items, 4 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["8/13", "4/13", "7/13", "6/13"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 6/13, so P(at least one) = 1 - 6/13 = 7/13."}, {"question": "A bag has 15 items, 4 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["4/5", "1331/3375", "4/15", "2044/3375"], "correctIndex": 3, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 1331/3375, so P(at least one) = 1 - 1331/3375 = 2044/3375."}, {"question": "A bag has 10 items, 4 of which are defective. You draw 2, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["9/25", "4/5", "16/25", "2/5"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 9/25, so P(at least one) = 1 - 9/25 = 16/25."}, {"question": "A bag has 13 items, 4 of which are defective. You draw 3, with replacement (each item put back before the next draw). What is the probability of getting at least one defective item?", "choices": ["729/2197", "12/13", "1468/2197", "4/13"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 729/2197, so P(at least one) = 1 - 729/2197 = 1468/2197."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["15/22", "7/22", "5/12", "5/6"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/22, so P(at least one) = 1 - 7/22 = 15/22."}, {"question": "A bag has 12 items, 5 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["1/1", "37/44", "7/44", "5/12"], "correctIndex": 1, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 7/44, so P(at least one) = 1 - 7/44 = 37/44."}, {"question": "A bag has 9 items, 5 of which are defective. You draw 2, without replacement. What is the probability of getting at least one defective item?", "choices": ["1/6", "5/9", "5/6", "1/1"], "correctIndex": 2, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 1/6, so P(at least one) = 1 - 1/6 = 5/6."}, {"question": "A bag has 14 items, 5 of which are defective. You draw 3, without replacement. What is the probability of getting at least one defective item?", "choices": ["10/13", "1/1", "5/14", "3/13"], "correctIndex": 0, "explanation": "Use the complement: P(at least one) = 1 - P(none). P(none) = 3/13, so P(at least one) = 1 - 3/13 = 10/13."}]}, "prob_replacement": {"name": "Probability: With vs. Without Replacement", "lesson": "**With replacement vs. without replacement**\n\nWith replacement: each draw is independent. The denominator (total items)\nstays the SAME every draw.\n\nWithout replacement: the denominator shrinks by 1 each draw. If you removed\na \"success\" item, the numerator shrinks too on the next draw.\n\nMultiple draws in sequence use the AND rule: multiply the probability of\neach stage, using the updated (or unchanged) counts at each stage.\n\nTest-day habit: always ask \"does the problem say replaced / put back, or\nnot?\" If it doesn't say, without replacement is the safer ACT default\nassumption for drawing physical objects like marbles or slips of paper.\n", "flashcards": [{"front": "With replacement: does the denominator change between draws?", "back": "No -- it stays the same every draw."}, {"front": "Without replacement: what happens to the denominator each draw?", "back": "It shrinks by 1 each draw (and the numerator shrinks too if a success was removed)."}, {"front": "Rule for combining probabilities across sequential draws?", "back": "Multiply them (the AND rule), using updated counts at each stage."}, {"front": "If a problem doesn't specify replacement, what should you assume on the ACT?", "back": "Without replacement is the safer default for drawing physical objects."}], "bank": [{"question": "A bag has 6 red and 4 blue marbles (10 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["1/3", "9/25", "1/1", "3/5"], "correctIndex": 0, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 5/9 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/5 x 5/9 = 1/3."}, {"question": "A bag has 5 red and 4 blue marbles (9 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["5/9", "1/1", "25/81", "5/18"], "correctIndex": 2, "explanation": "First draw: P(red) = 5/9. Second draw: P(red) = 5/9 (same as before since the marble was replaced). Multiply: 5/9 x 5/9 = 25/81."}, {"question": "A bag has 3 red and 3 blue marbles (6 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["9/10", "1/2", "1/5", "1/4"], "correctIndex": 2, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 2/5 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 1/2 x 2/5 = 1/5."}, {"question": "A bag has 6 red and 3 blue marbles (9 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["5/12", "2/3", "4/9", "1/1"], "correctIndex": 2, "explanation": "First draw: P(red) = 2/3. Second draw: P(red) = 2/3 (same as before since the marble was replaced). Multiply: 2/3 x 2/3 = 4/9."}, {"question": "A bag has 5 red and 6 blue marbles (11 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["2/11", "5/11", "25/121", "10/11"], "correctIndex": 2, "explanation": "First draw: P(red) = 5/11. Second draw: P(red) = 5/11 (same as before since the marble was replaced). Multiply: 5/11 x 5/11 = 25/121."}, {"question": "A bag has 5 red and 6 blue marbles (11 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["25/121", "10/11", "2/11", "5/11"], "correctIndex": 0, "explanation": "First draw: P(red) = 5/11. Second draw: P(red) = 5/11 (same as before since the marble was replaced). Multiply: 5/11 x 5/11 = 25/121."}, {"question": "A bag has 2 red and 5 blue marbles (7 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["1/21", "4/7", "2/7", "4/49"], "correctIndex": 3, "explanation": "First draw: P(red) = 2/7. Second draw: P(red) = 2/7 (same as before since the marble was replaced). Multiply: 2/7 x 2/7 = 4/49."}, {"question": "A bag has 3 red and 5 blue marbles (8 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["37/56", "3/8", "9/64", "3/28"], "correctIndex": 3, "explanation": "First draw: P(red) = 3/8. Second draw: P(red) = 2/7 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/8 x 2/7 = 3/28."}, {"question": "A bag has 2 red and 2 blue marbles (4 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["5/6", "1/2", "1/4", "1/6"], "correctIndex": 3, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 1/3 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 1/2 x 1/3 = 1/6."}, {"question": "A bag has 2 red and 3 blue marbles (5 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["4/25", "2/5", "4/5", "1/10"], "correctIndex": 0, "explanation": "First draw: P(red) = 2/5. Second draw: P(red) = 2/5 (same as before since the marble was replaced). Multiply: 2/5 x 2/5 = 4/25."}, {"question": "A bag has 4 red and 6 blue marbles (10 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["2/15", "4/5", "4/25", "2/5"], "correctIndex": 2, "explanation": "First draw: P(red) = 2/5. Second draw: P(red) = 2/5 (same as before since the marble was replaced). Multiply: 2/5 x 2/5 = 4/25."}, {"question": "A bag has 5 red and 5 blue marbles (10 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["1/1", "1/4", "2/9", "1/2"], "correctIndex": 1, "explanation": "First draw: P(red) = 1/2. Second draw: P(red) = 1/2 (same as before since the marble was replaced). Multiply: 1/2 x 1/2 = 1/4."}, {"question": "A bag has 3 red and 2 blue marbles (5 total). You draw two marbles, with replacement (the first marble IS put back before the second draw). What is the probability both are red?", "choices": ["3/5", "9/25", "3/10", "1/1"], "correctIndex": 1, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 3/5 (same as before since the marble was replaced). Multiply: 3/5 x 3/5 = 9/25."}, {"question": "A bag has 6 red and 2 blue marbles (8 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["9/16", "3/4", "15/28", "1/1"], "correctIndex": 2, "explanation": "First draw: P(red) = 3/4. Second draw: P(red) = 5/7 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/4 x 5/7 = 15/28."}, {"question": "A bag has 6 red and 4 blue marbles (10 total). You draw two marbles, without replacement (the first marble is NOT put back). What is the probability both are red?", "choices": ["1/3", "9/25", "3/5", "1/1"], "correctIndex": 0, "explanation": "First draw: P(red) = 3/5. Second draw: P(red) = 5/9 (denominator and numerator both shrink by 1 since one red was removed and not replaced). Multiply: 3/5 x 5/9 = 1/3."}]}, "prob_counting": {"name": "Probability: Counting-Disguised Problems", "lesson": "**Counting-disguised-as-probability (numbered slips)**\n\n\"Slips numbered 1 to N are in a bag\" problems are really counting problems\nwearing a probability costume. Steps:\n1. Correctly COUNT how many integers in the range satisfy the condition.\n2. Divide by the total number of slips.\n\nWatch for overlap traps: \"multiple of 3 OR multiple of 4\" requires\ninclusion-exclusion -- add the two counts, then SUBTRACT the double-counted\noverlap (multiples of both, i.e. multiples of the LCM of 3 and 4 = 12).\n\ncount(A or B) = count(A) + count(B) - count(A and B)\n", "flashcards": [{"front": "What kind of problem is \"numbered slips in a bag\" really testing?", "back": "Counting -- correctly count favorable outcomes, then divide by total."}, {"front": "Formula for \"multiple of A or multiple of B\" counting?", "back": "count(A) + count(B) - count(A and B), where A-and-B uses the LCM of A and B."}, {"front": "Why do you subtract the overlap in an \"or\" counting problem?", "back": "Numbers that are multiples of both got counted twice, once in each group."}], "bank": [{"question": "Slips numbered 1 to 30 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["17/30", "1/2", "1/15", "7/30"], "correctIndex": 1, "explanation": "Multiples of 4: 7. Multiples of 3: 10. Multiples of both (i.e. of LCM 12): 2, which got double-counted. (7 + 10 - 2) / 30 = 15/30 = 1/2."}, {"question": "Slips numbered 1 to 59 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 4?", "choices": ["33/59", "29/59", "19/59", "4/59"], "correctIndex": 1, "explanation": "Multiples of 3: 19. Multiples of 4: 14. Multiples of both (i.e. of LCM 12): 4, which got double-counted. (19 + 14 - 4) / 59 = 29/59 = 29/59."}, {"question": "Slips numbered 1 to 32 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 4?", "choices": ["3/16", "7/16", "1/32", "13/32"], "correctIndex": 3, "explanation": "Multiples of 5: 6. Multiples of 4: 8. Multiples of both (i.e. of LCM 20): 1, which got double-counted. (6 + 8 - 1) / 32 = 13/32 = 13/32."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["12/25", "2/25", "14/25", "6/25"], "correctIndex": 0, "explanation": "Multiples of 4: 12. Multiples of 3: 16. Multiples of both (i.e. of LCM 12): 4, which got double-counted. (12 + 16 - 4) / 50 = 24/50 = 12/25."}, {"question": "Slips numbered 1 to 43 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 4?", "choices": ["10/43", "31/43", "21/43 (alt 1)", "21/43"], "correctIndex": 3, "explanation": "Multiples of 2: 21. Multiples of 4: 10. Multiples of both (i.e. of LCM 4): 10, which got double-counted. (21 + 10 - 10) / 43 = 21/43 = 21/43."}, {"question": "Slips numbered 1 to 32 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 3?", "choices": ["9/16", "1/2", "1/4", "1/16"], "correctIndex": 1, "explanation": "Multiples of 4: 8. Multiples of 3: 10. Multiples of both (i.e. of LCM 12): 2, which got double-counted. (8 + 10 - 2) / 32 = 16/32 = 1/2."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 2?", "choices": ["6/25", "1/2 (alt 1)", "37/50", "1/2"], "correctIndex": 3, "explanation": "Multiples of 4: 12. Multiples of 2: 25. Multiples of both (i.e. of LCM 4): 12, which got double-counted. (12 + 25 - 12) / 50 = 25/50 = 1/2."}, {"question": "Slips numbered 1 to 50 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 6?", "choices": ["8/25 (alt 1)", "12/25", "8/25", "4/25"], "correctIndex": 2, "explanation": "Multiples of 3: 16. Multiples of 6: 8. Multiples of both (i.e. of LCM 6): 8, which got double-counted. (16 + 8 - 8) / 50 = 16/50 = 8/25."}, {"question": "Slips numbered 1 to 49 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 2?", "choices": ["4/49", "9/49", "29/49", "33/49"], "correctIndex": 2, "explanation": "Multiples of 5: 9. Multiples of 2: 24. Multiples of both (i.e. of LCM 10): 4, which got double-counted. (9 + 24 - 4) / 49 = 29/49 = 29/49."}, {"question": "Slips numbered 1 to 21 are in a bag. What is the probability of drawing a multiple of 3 or a multiple of 7?", "choices": ["10/21", "3/7", "1/3", "1/21"], "correctIndex": 1, "explanation": "Multiples of 3: 7. Multiples of 7: 3. Multiples of both (i.e. of LCM 21): 1, which got double-counted. (7 + 3 - 1) / 21 = 9/21 = 3/7."}, {"question": "Slips numbered 1 to 59 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 4?", "choices": ["2/59", "23/59", "11/59", "25/59"], "correctIndex": 1, "explanation": "Multiples of 5: 11. Multiples of 4: 14. Multiples of both (i.e. of LCM 20): 2, which got double-counted. (11 + 14 - 2) / 59 = 23/59 = 23/59."}, {"question": "Slips numbered 1 to 21 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 3?", "choices": ["10/21", "2/3", "1/7", "17/21"], "correctIndex": 1, "explanation": "Multiples of 2: 10. Multiples of 3: 7. Multiples of both (i.e. of LCM 6): 3, which got double-counted. (10 + 7 - 3) / 21 = 14/21 = 2/3."}, {"question": "Slips numbered 1 to 33 are in a bag. What is the probability of drawing a multiple of 2 or a multiple of 5?", "choices": ["16/33", "19/33", "1/11", "2/3"], "correctIndex": 1, "explanation": "Multiples of 2: 16. Multiples of 5: 6. Multiples of both (i.e. of LCM 10): 3, which got double-counted. (16 + 6 - 3) / 33 = 19/33 = 19/33."}, {"question": "Slips numbered 1 to 57 are in a bag. What is the probability of drawing a multiple of 4 or a multiple of 5?", "choices": ["25/57", "14/57", "23/57", "2/57"], "correctIndex": 2, "explanation": "Multiples of 4: 14. Multiples of 5: 11. Multiples of both (i.e. of LCM 20): 2, which got double-counted. (14 + 11 - 2) / 57 = 23/57 = 23/57."}, {"question": "Slips numbered 1 to 42 are in a bag. What is the probability of drawing a multiple of 5 or a multiple of 7?", "choices": ["1/3", "13/42", "4/21", "1/42"], "correctIndex": 1, "explanation": "Multiples of 5: 8. Multiples of 7: 6. Multiples of both (i.e. of LCM 35): 1, which got double-counted. (8 + 6 - 1) / 42 = 13/42 = 13/42."}]}};
 const CONCEPT_ORDER = ["units_digit_powers", "gcf_lcm", "arith_geo_sequences", "abs_value_inequalities", "prob_complement", "prob_replacement", "prob_counting"];
 const FIREBASE_CONFIG = {"apiKey": "AIzaSyBMo_E8gqQhzILhJGHUHiyoO7gq-48_YIc", "authDomain": "jordan-act-mastery.firebaseapp.com", "projectId": "jordan-act-mastery", "storageBucket": "jordan-act-mastery.firebasestorage.app", "messagingSenderId": "769575675180", "appId": "1:769575675180:web:1e1d74b06535865da33889"};
 const USERS = {"jordan": "JORDAN", "jay": "JAYPRACTICE"};
 const PROGRESS_COLLECTION = "mastery_progress";
 const META_COLLECTION = "mastery_meta";
 const FIREBASE_CONFIGURED = !Object.values(FIREBASE_CONFIG).some(v => String(v).startsWith("PASTE_"));
-const BOSS_UNLOCK_COUNT = 2; // concepts mastered before Boss Round appears
+const BOSS_UNLOCK_COUNT = 2;
 
 let db = null;
 if (FIREBASE_CONFIGURED) {
-  firebase.initializeApp(FIREBASE_CONFIG);
-  db = firebase.firestore();
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+  } catch (e) {
+    console.error("Firebase failed to initialize -- continuing without cloud save.", e);
+    db = null;
+  }
 }
 
-// ---- sound (synthesized, no audio files needed) ----
+// ============================================================
+// CELEBRATION VIDEOS -- curated YouTube clips (Jay-provided links + timing),
+// embedded via the official YouTube iframe embed with start/end params.
+// One list per outcome category; a random one plays when that category fires.
+// ============================================================
+const CELEBRATION_VIDEOS = {
+  mastery: [
+    { id: "Dcuy71cAeMM", start: 510, end: 547 }, // Rocky training montage, 8:30-9:07
+    { id: "S_6vjb1cJkE", start: 129, end: 176 },
+    { id: "vi0Lbjs5ECI", start: 145, end: 180 },
+    { id: "rLtZmKyeW6g", start: 16, end: 30 },
+  ],
+  tenStraight: [
+    { id: "PRosgWfKJN8", start: 110, end: 115 },
+  ],
+  fellShort: [
+    { id: "zWhEgdh0X9c", start: 60, end: 70 },
+  ],
+  // Missed 2 or more (as opposed to fellShort, which is exactly 1 miss).
+  missedMultiple: [
+    { id: "9FnO3igOkOk", start: 39, end: 46 },
+  ],
+  // Plays only when the LAST concept flips to mastered (all 7 done) --
+  // a bigger, separate celebration from the per-concept mastery clips above.
+  finalMastery: [
+    { id: "4pFUP0HZwWM", start: 57, end: 218 },
+  ],
+};
+function showCelebrationVideo(category) {
+  const list = CELEBRATION_VIDEOS[category];
+  if (!list || list.length === 0) return;
+  const clip = pick(list);
+  const box = document.getElementById("video-modal-box");
+  const src = `https://www.youtube.com/embed/${clip.id}?start=${clip.start}&end=${clip.end}&autoplay=1&rel=0`;
+  box.innerHTML = `<div class="video-frame-wrap"><iframe src="${src}" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+    <button class="next-btn" onclick="closeCelebrationVideo()">Continue</button>`;
+  document.getElementById("video-modal-backdrop").classList.add("open");
+}
+window.closeCelebrationVideo = function() {
+  document.getElementById("video-modal-backdrop").classList.remove("open");
+  document.getElementById("video-modal-box").innerHTML = ""; // clears the iframe, stopping playback
+};
+let pendingCelebrationTimer = null;
+function scheduleCelebration(category, delay) {
+  if (pendingCelebrationTimer) clearTimeout(pendingCelebrationTimer);
+  pendingCelebrationTimer = setTimeout(() => {
+    pendingCelebrationTimer = null;
+    showCelebrationVideo(category);
+  }, delay);
+}
+function cancelPendingCelebration() {
+  if (pendingCelebrationTimer) { clearTimeout(pendingCelebrationTimer); pendingCelebrationTimer = null; }
+}
+
+// ============================================================
+// SOUND -- synthesized in-browser, no audio files, 4 selectable packs
+// ============================================================
 let audioCtx = null;
 let soundOn = true;
 function ctx() {
@@ -226,41 +335,235 @@ function tone(freq, startOffset, dur, type, vol) {
     osc.start(c.currentTime + startOffset); osc.stop(c.currentTime + startOffset + dur);
   } catch (e) { /* ignore audio errors */ }
 }
-function soundCorrect() { tone(660, 0, 0.09, "sine", 0.12); tone(880, 0.09, 0.14, "sine", 0.12); }
-function soundIncorrect() { tone(180, 0, 0.22, "square", 0.08); }
-function soundMastered() {
-  [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.16, "triangle", 0.14));
+function sweep(freqStart, freqEnd, startOffset, dur, type, vol) {
+  if (!soundOn) return;
+  try {
+    const c = ctx();
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freqStart, c.currentTime + startOffset);
+    osc.frequency.linearRampToValueAtTime(freqEnd, c.currentTime + startOffset + dur);
+    gain.gain.setValueAtTime(vol, c.currentTime + startOffset);
+    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + startOffset + dur);
+    osc.connect(gain); gain.connect(c.destination);
+    osc.start(c.currentTime + startOffset); osc.stop(c.currentTime + startOffset + dur);
+  } catch (e) { /* ignore audio errors */ }
 }
 
-// ---- avatar (inline SVG mascot) ----
-function avatarSvg(mood) {
-  const face = {
-    neutral: {mouth: 'M 22 40 Q 32 40 42 40', brow: ''},
-    happy:   {mouth: 'M 20 36 Q 32 50 44 36', brow: ''},
-    sad:     {mouth: 'M 20 44 Q 32 32 44 44', brow: ''},
-    celebrate: {mouth: 'M 18 34 Q 32 54 46 34', brow: 'star'},
-  }[mood] || {mouth: 'M 22 40 Q 32 40 42 40'};
-  const stars = mood === 'celebrate'
-    ? `<text x="4" y="14" font-size="12">\u2728</text><text x="46" y="16" font-size="12">\u2728</text>`
-    : '';
+const SOUND_PACKS = {
+  chalkboard: {
+    label: "Chalkboard", sub: "Clean chime + soft thud",
+    correct: () => { tone(660, 0, 0.09, "sine", 0.12); tone(880, 0.09, 0.14, "sine", 0.12); },
+    incorrect: () => { tone(180, 0, 0.22, "square", 0.08); },
+    mastered: () => { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.16, "triangle", 0.14)); },
+  },
+  arcade: {
+    label: "Arcade", sub: "8-bit blips + buzzer",
+    correct: () => { tone(784, 0, 0.06, "square", 0.10); tone(988, 0.06, 0.06, "square", 0.10); tone(1175, 0.12, 0.09, "square", 0.10); },
+    incorrect: () => { tone(140, 0, 0.18, "sawtooth", 0.10); tone(130, 0.02, 0.18, "sawtooth", 0.08); },
+    mastered: () => { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.08, 0.12, "square", 0.12)); },
+  },
+  bell: {
+    label: "Bell", sub: "Warm chord + soft descend",
+    correct: () => { tone(523, 0, 0.5, "sine", 0.08); tone(659, 0, 0.5, "sine", 0.07); tone(784, 0, 0.5, "sine", 0.07); },
+    incorrect: () => { tone(392, 0, 0.3, "sine", 0.09); tone(330, 0.25, 0.35, "sine", 0.08); },
+    mastered: () => {
+      [523, 659, 784].forEach((f, i) => tone(f, i * 0.05, 0.6, "sine", 0.09));
+      [1046, 1318, 1568].forEach((f, i) => tone(f, 0.3 + i * 0.05, 0.5, "sine", 0.06));
+    },
+  },
+  nature: {
+    label: "Nature", sub: "Bird chirp + low rumble",
+    correct: () => { sweep(700, 1400, 0, 0.18, "sine", 0.12); },
+    incorrect: () => { sweep(160, 90, 0, 0.35, "sine", 0.12); tone(80, 0, 0.4, "sine", 0.06); },
+    mastered: () => { for (let i = 0; i < 4; i++) sweep(700, 1500, i * 0.22, 0.16, "sine", 0.12); },
+  },
+};
+function currentPack() { return SOUND_PACKS[state.meta.soundPack] || SOUND_PACKS.chalkboard; }
+function soundCorrect() { currentPack().correct(); }
+function soundIncorrect() { currentPack().incorrect(); }
+function soundMastered() { currentPack().mastered(); }
+
+// ============================================================
+// BACKGROUNDS -- 4 selectable page themes, applied via CSS variables
+// ============================================================
+const THEMES = {
+  chalkboard: {
+    label: "Chalkboard", sub: "Deep pine green",
+    swatch: "radial-gradient(ellipse at top left, #16302A 0%, #102019 100%)",
+    vars: { "--bg": "#16302A", "--bg-deep": "#102019", "--surface": "#1F4238", "--surface-hi": "#275248",
+            "--chalk": "#F2EDDD", "--chalk-dim": "#B9C4B8", "--accent": "#D6A94C", "--accent-dim": "#8C7031",
+            "--good": "#7FB78B", "--bad": "#DE8367", "--rule": "rgba(242,237,221,0.16)" },
+    decor: "none",
+  },
+  midnight: {
+    label: "Midnight Sky", sub: "Indigo with stars",
+    swatch: "radial-gradient(ellipse at top, #2A3768 0%, #0C1024 75%)",
+    vars: { "--bg": "#24305C", "--bg-deep": "#0C1024", "--surface": "#28305A", "--surface-hi": "#333C6E",
+            "--chalk": "#EDEBFA", "--chalk-dim": "#B7B9D9", "--accent": "#F2C572", "--accent-dim": "#9C7C3E",
+            "--good": "#8FD9A8", "--bad": "#F19489", "--rule": "rgba(237,235,250,0.16)" },
+    decor: "stars",
+  },
+  sunrise: {
+    label: "Sunrise Desk", sub: "Warm parchment",
+    swatch: "radial-gradient(ellipse at top left, #FCEFD9 0%, #F6DCB3 100%)",
+    vars: { "--bg": "#FCEFD9", "--bg-deep": "#F6DCB3", "--surface": "#FFFDF7", "--surface-hi": "#FBF1DD",
+            "--chalk": "#4A3A22", "--chalk-dim": "#8A7754", "--accent": "#B5651D", "--accent-dim": "#8A4E16",
+            "--good": "#4F8F5C", "--bad": "#C1583D", "--rule": "rgba(74,58,34,0.16)" },
+    decor: "none",
+  },
+  forest: {
+    label: "Forest Trail", sub: "Mossy, dappled light",
+    swatch: "radial-gradient(ellipse at top left, #1F3D2C 0%, #12241A 100%)",
+    vars: { "--bg": "#1F3D2C", "--bg-deep": "#12241A", "--surface": "#254A34", "--surface-hi": "#2E5A40",
+            "--chalk": "#EFEADC", "--chalk-dim": "#B7C6B9", "--accent": "#C7A24A", "--accent-dim": "#8A6E30",
+            "--good": "#8FCB9A", "--bad": "#DB8B6E", "--rule": "rgba(239,234,220,0.16)" },
+    decor: "dapples",
+  },
+};
+let appliedBackground = null;
+function applyBackground(name) {
+  const theme = THEMES[name] || THEMES.chalkboard;
+  if (appliedBackground === name) return;
+  appliedBackground = name;
+  Object.keys(theme.vars).forEach(k => document.documentElement.style.setProperty(k, theme.vars[k]));
+  document.body.style.background = theme.swatch;
+  const decorEl = document.getElementById("bg-decor");
+  if (!decorEl) return;
+  decorEl.innerHTML = "";
+  if (theme.decor === "stars") {
+    for (let i = 0; i < 50; i++) {
+      const s = document.createElement("div");
+      s.className = "bg-star";
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.top = Math.random() * 100 + "vh";
+      s.style.animationDelay = (Math.random() * 3) + "s";
+      s.style.width = s.style.height = (1 + Math.random() * 1.6) + "px";
+      decorEl.appendChild(s);
+    }
+  } else if (theme.decor === "dapples") {
+    for (let i = 0; i < 14; i++) {
+      const d = document.createElement("div");
+      d.className = "bg-dapple";
+      d.style.left = Math.random() * 100 + "vw";
+      d.style.top = Math.random() * 100 + "vh";
+      const size = 60 + Math.random() * 120;
+      d.style.width = d.style.height = size + "px";
+      decorEl.appendChild(d);
+    }
+  }
+}
+
+
+const AVATAR_DEFS = {
+  fox:    { label: "Fox",    color: "#C97B4A", dark: "#7A431F", defaultName: "Ember" },
+  owl:    { label: "Owl",    color: "#B08D57", dark: "#5E4A2C", defaultName: "Hoot" },
+  robot:  { label: "Robot",  color: "#8FA6A3", dark: "#3E504D", defaultName: "Circuit" },
+  dragon: { label: "Dragon", color: "#4E8B6D", dark: "#274736", defaultName: "Cinder" },
+};
+
+function eyesFor(mood, cx1, cx2, cy) {
+  if (mood === "sad") {
+    return `<circle cx="${cx1}" cy="${cy+1}" r="3" fill="#16302A" />
+            <circle cx="${cx2}" cy="${cy+1}" r="3" fill="#16302A" />
+            <path d="M ${cx1-4} ${cy-5} Q ${cx1} ${cy-8} ${cx1+4} ${cy-5}" stroke="#16302A" stroke-width="1.6" fill="none" />
+            <path d="M ${cx2-4} ${cy-5} Q ${cx2} ${cy-8} ${cx2+4} ${cy-5}" stroke="#16302A" stroke-width="1.6" fill="none" />`;
+  }
+  if (mood === "celebrate") {
+    return `<path d="M ${cx1-4} ${cy} L ${cx1} ${cy-4} L ${cx1+4} ${cy}" stroke="#16302A" stroke-width="2.4" fill="none" stroke-linecap="round" />
+            <path d="M ${cx2-4} ${cy} L ${cx2} ${cy-4} L ${cx2+4} ${cy}" stroke="#16302A" stroke-width="2.4" fill="none" stroke-linecap="round" />`;
+  }
+  return `<circle cx="${cx1}" cy="${cy}" r="3.4" fill="#16302A" /><circle cx="${cx2}" cy="${cy}" r="3.4" fill="#16302A" />`;
+}
+function mouthFor(mood) {
+  return {
+    neutral: 'M 22 40 Q 32 40 42 40',
+    happy: 'M 20 36 Q 32 50 44 36',
+    sad: 'M 20 44 Q 32 32 44 44',
+    celebrate: 'M 18 34 Q 32 54 46 34',
+  }[mood] || 'M 22 40 Q 32 40 42 40';
+}
+function sparkles() {
+  return `<text x="2" y="16" font-size="13">\u2728</text><text x="48" y="18" font-size="13">\u2728</text>`;
+}
+
+function avatarSvgFox(mood) {
+  const d = AVATAR_DEFS.fox;
+  const tail = mood === "celebrate" ? `<path d="M 52 46 Q 66 40 60 58 Q 56 50 50 52" fill="${d.color}" stroke="${d.dark}" stroke-width="1" />` : "";
   return `<svg viewBox="0 0 64 64" width="64" height="64">
-    <circle cx="32" cy="32" r="26" fill="#D6A94C" />
-    <circle cx="22" cy="27" r="3.4" fill="#16302A" />
-    <circle cx="42" cy="27" r="3.4" fill="#16302A" />
-    <path d="${face.mouth}" stroke="#16302A" stroke-width="3" fill="none" stroke-linecap="round" />
-    ${stars}
+    <path d="M 14 18 L 22 4 L 27 20 Z" fill="${d.color}" stroke="${d.dark}" stroke-width="1"/>
+    <path d="M 50 18 L 42 4 L 37 20 Z" fill="${d.color}" stroke="${d.dark}" stroke-width="1"/>
+    <circle cx="32" cy="32" r="24" fill="${d.color}" />
+    <path d="M 20 40 Q 32 52 44 40 Q 40 48 32 48 Q 24 48 20 40 Z" fill="#F2EDDD" />
+    ${eyesFor(mood, 23, 41, 27)}
+    <ellipse cx="32" cy="38" rx="2.6" ry="2" fill="${d.dark}" />
+    <path d="${mouthFor(mood)}" stroke="${d.dark}" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    ${tail}
+    ${mood === "celebrate" ? sparkles() : ""}
   </svg>`;
 }
+function avatarSvgOwl(mood) {
+  const d = AVATAR_DEFS.owl;
+  const wingY = mood === "celebrate" ? 10 : 22;
+  return `<svg viewBox="0 0 64 64" width="64" height="64">
+    <path d="M 8 ${wingY} Q 2 34 12 46" stroke="${d.color}" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M 56 ${wingY} Q 62 34 52 46" stroke="${d.color}" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M 22 10 L 18 2 L 27 8 Z" fill="${d.color}"/>
+    <path d="M 42 10 L 46 2 L 37 8 Z" fill="${d.color}"/>
+    <circle cx="32" cy="34" r="23" fill="${d.color}" />
+    <circle cx="23" cy="31" r="9" fill="#F2EDDD" />
+    <circle cx="41" cy="31" r="9" fill="#F2EDDD" />
+    ${eyesFor(mood, 23, 41, 31)}
+    <path d="M 30 40 L 34 40 L 32 45 Z" fill="${d.dark}" />
+    <path d="${mouthFor(mood).replace(/40/g, '48')}" stroke="${d.dark}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6" />
+    ${mood === "celebrate" ? sparkles() : ""}
+  </svg>`;
+}
+function avatarSvgRobot(mood) {
+  const d = AVATAR_DEFS.robot;
+  const antennaColor = mood === "celebrate" ? "#D6A94C" : d.dark;
+  const eyeColor = mood === "sad" ? "#DE8367" : (mood === "celebrate" ? "#D6A94C" : "#8FE3D0");
+  return `<svg viewBox="0 0 64 64" width="64" height="64">
+    <line x1="32" y1="10" x2="32" y2="2" stroke="${d.dark}" stroke-width="2" />
+    <circle cx="32" cy="2" r="3.2" fill="${antennaColor}" />
+    <rect x="10" y="12" width="44" height="42" rx="10" fill="${d.color}" />
+    ${mood === "sad"
+      ? `<rect x="18" y="26" width="9" height="4" rx="1" fill="${eyeColor}" /><rect x="37" y="26" width="9" height="4" rx="1" fill="${eyeColor}" />`
+      : mood === "celebrate"
+      ? `<rect x="18" y="22" width="9" height="9" rx="2" fill="${eyeColor}" /><rect x="37" y="22" width="9" height="9" rx="2" fill="${eyeColor}" />`
+      : `<rect x="18" y="24" width="9" height="7" rx="2" fill="${eyeColor}" /><rect x="37" y="24" width="9" height="7" rx="2" fill="${eyeColor}" />`}
+    <path d="${mouthFor(mood)}" stroke="${d.dark}" stroke-width="2.6" fill="none" stroke-linecap="round" transform="translate(0,2)"/>
+    ${mood === "celebrate" ? sparkles() : ""}
+  </svg>`;
+}
+function avatarSvgDragon(mood) {
+  const d = AVATAR_DEFS.dragon;
+  const smoke = mood === "celebrate" ? `<circle cx="46" cy="20" r="4" fill="#F2EDDD" opacity="0.6"/><circle cx="52" cy="14" r="3" fill="#F2EDDD" opacity="0.5"/>` : "";
+  return `<svg viewBox="0 0 64 64" width="64" height="64">
+    <path d="M 20 14 Q 22 4 27 12" stroke="${d.color}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 44 14 Q 42 4 37 12" stroke="${d.color}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 20 10 L 26 2 L 28 12 Z" fill="${d.dark}"/>
+    <path d="M 44 10 L 38 2 L 36 12 Z" fill="${d.dark}"/>
+    <circle cx="32" cy="34" r="23" fill="${d.color}" />
+    ${eyesFor(mood, 23, 41, 30)}
+    <circle cx="28" cy="40" r="1.4" fill="${d.dark}" /><circle cx="36" cy="40" r="1.4" fill="${d.dark}" />
+    <path d="${mouthFor(mood)}" stroke="${d.dark}" stroke-width="2.6" fill="none" stroke-linecap="round" transform="translate(0,4)"/>
+    ${smoke}
+  </svg>`;
+}
+const AVATAR_RENDERERS = { fox: avatarSvgFox, owl: avatarSvgOwl, robot: avatarSvgRobot, dragon: avatarSvgDragon };
+function avatarSvg(type, mood) { return (AVATAR_RENDERERS[type] || avatarSvgFox)(mood); }
+
 function setAvatar(mood) {
   const el = document.getElementById("avatar-wrap");
   if (!el) return;
-  el.innerHTML = avatarSvg(mood);
+  el.innerHTML = avatarSvg(state.meta.avatar || "fox", mood);
   el.classList.remove("bump");
   void el.offsetWidth;
   el.classList.add("bump");
 }
 
-// ---- confetti ----
 function burstConfetti() {
   const colors = ["#D6A94C", "#7FB78B", "#DE8367", "#B968C7", "#F2EDDD"];
   for (let i = 0; i < 44; i++) {
@@ -275,7 +578,6 @@ function burstConfetti() {
   }
 }
 
-// ---- varied copy ----
 const WIN_MESSAGES = [
   "Perfect score, banked for today. Come back on a different day and do it again to master this concept.",
   "10 for 10. One more clean run on a different day and this one's retired for good.",
@@ -294,12 +596,16 @@ const MASTERED_MESSAGES = [
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 // ---- state ----
+function defaultMeta() {
+  return { user: state.user, bestStreak: 0, currentStreak: 0, bossRoundBestScore: 0, bossRoundPlays: 0,
+           avatar: "fox", avatarName: "", soundPack: "chalkboard", background: "chalkboard" };
+}
 let state = {
   user: null,
   progress: {},
-  meta: { bestStreak: 0, currentStreak: 0, bossRoundBestScore: 0, bossRoundPlays: 0 },
+  meta: null,
   screen: "gate",
-  activeConcept: null,   // concept id, or "__boss__" for Boss Round
+  activeConcept: null,
   flashIdx: 0,
   flashFlipped: false,
   quizQueue: [],
@@ -307,6 +613,8 @@ let state = {
   quizScore: 0,
   quizAnswered: false,
   winMsg: "", failMsg: "",
+  draft: null,       // customize-screen draft: {avatar, avatarName, soundPack, previewMood}
+  isFirstTimeSetup: false,
 };
 
 function todayStr() {
@@ -318,18 +626,21 @@ function metaDocId() { return state.user + "_meta"; }
 
 async function loadProgress() {
   state.progress = {};
-  state.meta = { user: state.user, bestStreak: 0, currentStreak: 0, bossRoundBestScore: 0, bossRoundPlays: 0 };
-  if (!db) return;
-  for (const cid of CONCEPT_ORDER) {
+  state.meta = defaultMeta();
+  let metaExisted = false;
+  if (db) {
+    for (const cid of CONCEPT_ORDER) {
+      try {
+        const snap = await db.collection(PROGRESS_COLLECTION).doc(progressDocId(cid)).get();
+        if (snap.exists) state.progress[cid] = snap.data();
+      } catch (e) { console.error("load progress failed", cid, e); }
+    }
     try {
-      const snap = await db.collection(PROGRESS_COLLECTION).doc(progressDocId(cid)).get();
-      if (snap.exists) state.progress[cid] = snap.data();
-    } catch (e) { console.error("load progress failed", cid, e); }
+      const msnap = await db.collection(META_COLLECTION).doc(metaDocId()).get();
+      if (msnap.exists) { state.meta = { ...defaultMeta(), ...msnap.data() }; metaExisted = true; }
+    } catch (e) { console.error("load meta failed", e); }
   }
-  try {
-    const msnap = await db.collection(META_COLLECTION).doc(metaDocId()).get();
-    if (msnap.exists) state.meta = msnap.data();
-  } catch (e) { console.error("load meta failed", e); }
+  state.isFirstTimeSetup = !metaExisted;
 }
 
 async function saveMeta() {
@@ -338,7 +649,6 @@ async function saveMeta() {
     catch (e) { console.error("save meta failed", e); }
   }
 }
-
 async function savePassDate(conceptId) {
   const existing = state.progress[conceptId] || { passDates: [], attempts: 0 };
   const passDates = Array.from(new Set([...(existing.passDates || []), todayStr()]));
@@ -368,7 +678,6 @@ function recordQuizStreak(perfect) {
     state.meta.currentStreak = 0;
   }
 }
-
 function isMastered(conceptId) {
   const p = state.progress[conceptId];
   return !!(p && p.passDates && p.passDates.length >= 2);
@@ -379,6 +688,10 @@ function hasOnePass(conceptId) {
 }
 function masteredCount() { return CONCEPT_ORDER.filter(isMastered).length; }
 function bossUnlocked() { return masteredCount() >= BOSS_UNLOCK_COUNT; }
+function companionName() {
+  const d = AVATAR_DEFS[state.meta.avatar] || AVATAR_DEFS.fox;
+  return (state.meta.avatarName && state.meta.avatarName.trim()) || d.defaultName;
+}
 
 function shuffledIndices(n) {
   const arr = Array.from({length: n}, (_, i) => i);
@@ -410,6 +723,7 @@ function render() {
   const avatarVisible = ["quiz", "result"].includes(state.screen);
   document.getElementById("avatar-wrap").style.display = avatarVisible ? "block" : "none";
   if (state.screen === "gate") return renderGate();
+  if (state.screen === "customize") return renderCustomize();
   if (state.screen === "map") return renderMap();
   if (state.screen === "lesson") return renderLesson();
   if (state.screen === "flash") return renderFlash();
@@ -422,6 +736,7 @@ function header(subtitle) {
     <div><h1>Concept by Concept</h1><div class="tagline">${subtitle || "One concept at a time. Ten in a row, twice, and it's yours for good."}</div></div>
     <div class="right">
       <button class="sound-toggle" onclick="toggleSound()">${soundOn ? "\ud83d\udd0a Sound on" : "\ud83d\udd07 Sound off"}</button>
+      ${state.user ? `<button class="link-btn" onclick="openCustomize()">${companionName()} \u00b7 customize</button>` : ""}
       ${state.user ? `<button class="user-badge" onclick="switchUser()">${state.user === "jordan" ? "Jordan" : "Jay"} &middot; switch</button>` : ""}
     </div>
   </header>`;
@@ -455,15 +770,120 @@ window.tryLogin = async function(user) {
   if (val === USERS[user]) {
     state.user = user;
     await loadProgress();
-    state.screen = "map";
+    applyBackground(state.meta.background);
+    if (state.isFirstTimeSetup) {
+      openCustomizeInternal(true);
+    } else {
+      state.screen = "map";
+    }
     render();
   } else {
     document.getElementById("gate-err").textContent = "That's not it -- try again.";
   }
 };
 window.switchUser = function() {
-  state.user = null; state.progress = {}; state.screen = "gate"; render();
+  cancelPendingCelebration();
+  state.user = null; state.progress = {}; state.meta = null; state.screen = "gate";
+  applyBackground("chalkboard");
+  render();
 };
+
+// ---- customize screen ----
+function openCustomizeInternal(isFirstTime) {
+  state.isFirstTimeSetup = !!isFirstTime;
+  state.draft = { avatar: state.meta.avatar, avatarName: state.meta.avatarName, soundPack: state.meta.soundPack,
+                  background: state.meta.background, previewMood: "happy" };
+  state.screen = "customize";
+  applyBackground(state.draft.background);
+}
+window.openCustomize = function() { openCustomizeInternal(false); render(); };
+
+window.pickDraftAvatar = function(type) { state.draft.avatar = type; render(); };
+window.pickDraftSound = function(pack) {
+  state.draft.soundPack = pack;
+  // immediately preview the correct sound in the newly picked pack
+  const oldPack = state.meta.soundPack;
+  state.meta.soundPack = pack;
+  soundCorrect();
+  state.meta.soundPack = oldPack;
+  render();
+};
+window.pickDraftBackground = function(name) {
+  state.draft.background = name;
+  applyBackground(name);
+  render();
+};
+window.previewMood = function(mood) {
+  state.draft.previewMood = mood;
+  const oldPack = state.meta.soundPack, oldAvatar = state.meta.avatar;
+  state.meta.soundPack = state.draft.soundPack;
+  state.meta.avatar = state.draft.avatar;
+  if (mood === "happy") soundCorrect();
+  else if (mood === "sad") soundIncorrect();
+  else if (mood === "celebrate") { soundMastered(); burstConfetti(); }
+  state.meta.soundPack = oldPack; state.meta.avatar = oldAvatar;
+  render();
+};
+window.saveCustomize = async function() {
+  const nameInput = document.getElementById("companion-name-input");
+  state.meta.avatar = state.draft.avatar;
+  state.meta.avatarName = nameInput ? nameInput.value.trim() : state.draft.avatarName;
+  state.meta.soundPack = state.draft.soundPack;
+  state.meta.background = state.draft.background;
+  await saveMeta();
+  applyBackground(state.meta.background);
+  state.screen = "map";
+  render();
+};
+
+function renderCustomize() {
+  const d = state.draft;
+  const avatarCards = Object.keys(AVATAR_DEFS).map(type => {
+    const def = AVATAR_DEFS[type];
+    return `<div class="picker-card ${d.avatar === type ? "selected" : ""}" onclick="pickDraftAvatar('${type}')">
+      ${avatarSvg(type, "neutral")}
+      <div class="pcard-label">${def.label}</div>
+    </div>`;
+  }).join("");
+  const soundCards = Object.keys(SOUND_PACKS).map(key => {
+    const p = SOUND_PACKS[key];
+    return `<div class="picker-card ${d.soundPack === key ? "selected" : ""}" onclick="pickDraftSound('${key}')">
+      <div class="pcard-label">${p.label}</div>
+      <div class="pcard-sub">${p.sub}</div>
+    </div>`;
+  }).join("");
+  const bgCards = Object.keys(THEMES).map(key => {
+    const t = THEMES[key];
+    return `<div class="picker-card ${d.background === key ? "selected" : ""}" onclick="pickDraftBackground('${key}')">
+      <div class="bg-swatch" style="background:${t.swatch}"></div>
+      <div class="pcard-label">${t.label}</div>
+      <div class="pcard-sub">${t.sub}</div>
+    </div>`;
+  }).join("");
+  app.innerHTML = header("Set up your practice companion") +
+    (state.isFirstTimeSetup ? "" : `<span class="back-link" onclick="backToMap()">&larr; Mastery map</span>`) +
+    `<div class="section-label">Choose a companion</div>
+     <div class="picker-grid">${avatarCards}</div>
+     <div class="section-label">Choose a sound pack (tap one to hear it)</div>
+     <div class="picker-grid">${soundCards}</div>
+     <div class="section-label">Choose a background (tap one to preview it)</div>
+     <div class="picker-grid">${bgCards}</div>
+     <div class="preview-panel">
+       ${avatarSvgAtSize(d.avatar, d.previewMood, 96)}
+       <div class="preview-mood-btns">
+         <button class="mood-btn" onclick="previewMood('neutral')">Neutral</button>
+         <button class="mood-btn" onclick="previewMood('happy')">Happy</button>
+         <button class="mood-btn" onclick="previewMood('sad')">Oops</button>
+         <button class="mood-btn" onclick="previewMood('celebrate')">Celebrate!</button>
+       </div>
+     </div>
+     <div class="section-label">Give it a name (optional)</div>
+     <input class="name-input" id="companion-name-input" placeholder="${AVATAR_DEFS[d.avatar].defaultName}" value="${escapeHtml(d.avatarName || "")}">
+     <button class="next-btn" onclick="saveCustomize()">${state.isFirstTimeSetup ? "Save and start practicing \u2192" : "Save changes"}</button>`;
+}
+function avatarSvgAtSize(type, mood, size) {
+  return avatarSvg(type, mood).replace('width="64" height="64"', `width="${size}" height="${size}"`);
+}
 
 function statusFor(cid) {
   if (isMastered(cid)) return {cls: "mastered", label: "Mastered", dot: "\u2713"};
@@ -512,6 +932,7 @@ window.openConcept = function(cid) {
   render();
 };
 window.openBossRound = function() {
+  cancelPendingCelebration();
   state.activeConcept = "__boss__";
   state.quizQueue = buildBossQueue();
   state.quizIdx = 0; state.quizScore = 0; state.quizAnswered = false;
@@ -534,10 +955,10 @@ function renderLesson() {
   app.innerHTML = header(c.name) +
     `<span class="back-link" onclick="backToMap()">&larr; Mastery map</span>` +
     stageTrack("Lesson") +
-    `<div class="lesson-body">${escapeHtml(c.lesson).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")}</div>` +
+    `<div class="lesson-body">${formatText(c.lesson)}</div>` +
     `<button class="next-btn" onclick="goFlash()">On to flashcards &rarr;</button>`;
 }
-window.backToMap = function() { state.screen = "map"; render(); };
+window.backToMap = function() { cancelPendingCelebration(); state.screen = "map"; applyBackground(state.meta.background); render(); };
 window.goFlash = function() { state.screen = "flash"; state.flashIdx = 0; state.flashFlipped = false; render(); };
 
 function renderFlash() {
@@ -548,7 +969,7 @@ function renderFlash() {
     `<span class="back-link" onclick="backToMap()">&larr; Mastery map</span>` +
     stageTrack("Flashcards") +
     `<div class="flashcard" onclick="flipCard()">
-       ${state.flashFlipped ? escapeHtml(card.back) : escapeHtml(card.front)}
+       ${state.flashFlipped ? formatText(card.back) : formatText(card.front)}
        <span class="hint">${state.flashFlipped ? "" : "(tap to reveal)"}</span>
      </div>` +
     `<div class="flash-nav">
@@ -566,12 +987,14 @@ window.nextFlash = function() {
   }
 };
 function startQuiz() {
+  cancelPendingCelebration();
   state.quizQueue = buildQuizQueue(state.activeConcept);
   state.quizIdx = 0; state.quizScore = 0; state.quizAnswered = false;
   state.screen = "quiz";
   setAvatar("neutral");
   render();
 }
+window.startQuiz = startQuiz;
 
 function renderQuiz() {
   const isBoss = state.activeConcept === "__boss__";
@@ -580,8 +1003,8 @@ function renderQuiz() {
   app.innerHTML = header(c.name) +
     (isBoss ? "" : stageTrack("Quiz")) +
     `<div class="quiz-progress">Question ${state.quizIdx+1} of ${state.quizQueue.length} &middot; ${state.quizScore} correct so far</div>` +
-    `<div class="quiz-q">${escapeHtml(q.question)}</div>` +
-    `<div id="choices">${q.choices.map((ch,i) => `<button class="choice" onclick="answer(${i})">${escapeHtml(ch)}</button>`).join("")}</div>` +
+    `<div class="quiz-q">${formatText(q.question)}</div>` +
+    `<div id="choices">${q.choices.map((ch,i) => `<button class="choice" onclick="answer(${i})">${formatText(ch)}</button>`).join("")}</div>` +
     `<div id="explanation-slot"></div>`;
 }
 
@@ -599,7 +1022,7 @@ window.answer = function(i) {
   if (correct) { state.quizScore++; soundCorrect(); setAvatar("happy"); }
   else { soundIncorrect(); setAvatar("sad"); }
   document.getElementById("explanation-slot").innerHTML =
-    `<div class="explanation">${escapeHtml(q.explanation)}</div>
+    `<div class="explanation">${formatText(q.explanation)}</div>
      <button class="next-btn" onclick="nextQuizQ()">${state.quizIdx === state.quizQueue.length - 1 ? "See results \u2192" : "Next question \u2192"}</button>`;
 };
 
@@ -663,9 +1086,10 @@ function renderResult() {
   }
 
   const c = CONTENT[state.activeConcept];
-  const mastered = isMastered(state.activeConcept);
   let msg;
-  if (perfect && state.justMastered) { msg = `<span class="result-msg win">${state.masteredMsg}</span>`; }
+  const allDone = state.justMastered && masteredCount() === CONCEPT_ORDER.length;
+  if (allDone) { msg = `<span class="result-msg win">${state.masteredMsg} And that's every concept -- all seven, mastered.</span>`; }
+  else if (perfect && state.justMastered) { msg = `<span class="result-msg win">${state.masteredMsg}</span>`; }
   else if (perfect) msg = `<span class="result-msg win">${state.winMsg}</span>`;
   else msg = `<span class="result-msg">${state.failMsg}</span>`;
 
@@ -685,19 +1109,45 @@ function renderResult() {
     setAvatar("celebrate");
     soundMastered();
     burstConfetti();
+    if (allDone) {
+      setTimeout(() => burstConfetti(), 500); // extra burst for the grand finale
+      scheduleCelebration("finalMastery", 1000);
+    } else {
+      scheduleCelebration("mastery", 900);
+    }
   } else if (perfect) {
     setAvatar("happy");
+    scheduleCelebration("tenStraight", 500);
   } else {
     setAvatar("sad");
+    const missedCount = state.quizQueue.length - state.quizScore;
+    scheduleCelebration(missedCount >= 2 ? "missedMultiple" : "fellShort", 500);
   }
 }
 
 function escapeHtml(s) {
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
+// Converts caret/underscore math shorthand into real superscript/subscript
+// tags, e.g. "a_n = a_1 * r^(n-1)" -> a<sub>n</sub> = a<sub>1</sub> * r<sup>n-1</sup>
+// and "7^20" -> 7<sup>20</sup>. Always escape HTML first, then call this.
+function formatMath(escaped) {
+  return escaped
+    .replace(/\^\(([^)]+)\)/g, "<sup>$1</sup>")
+    .replace(/\^(-?[A-Za-z0-9]+)/g, "<sup>$1</sup>")
+    .replace(/_\(([^)]+)\)/g, "<sub>$1</sub>")
+    .replace(/_(-?[A-Za-z0-9]+)/g, "<sub>$1</sub>");
+}
+// Full pipeline for user-facing math/lesson text: escape, then markdown bold,
+// then sup/sub. Use this (not escapeHtml alone) for anything that may contain
+// exponents, subscripts, or **bold** markup.
+function formatText(s) {
+  return formatMath(escapeHtml(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"));
+}
 
+applyBackground("chalkboard");
 render();
-window.__debug = { state, CONTENT, isMastered, hasOnePass, masteredCount, bossUnlocked };
+window.__debug = { state, CONTENT, isMastered, hasOnePass, masteredCount, bossUnlocked, AVATAR_DEFS, SOUND_PACKS, THEMES, applyBackground, CELEBRATION_VIDEOS, showCelebrationVideo };
 </script>
 </body>
 </html>
