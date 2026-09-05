@@ -1107,13 +1107,16 @@ function escapeHtml(s) {
 }
 // Converts caret/underscore math shorthand into real superscript/subscript
 // tags, e.g. "a_n = a_1 * r^(n-1)" -> a<sub>n</sub> = a<sub>1</sub> * r<sup>n-1</sup>
-// and "7^20" -> 7<sup>20</sup>. Always escape HTML first, then call this.
+// and "7^20" -> 7<sup>20</sup>. The base character/number and its sup/sub are
+// wrapped in a non-breaking span together -- otherwise a line wrap can land
+// between "a" and its subscript, visually orphaning the number on its own
+// line. Always escape HTML first, then call this.
 function formatMath(escaped) {
   return escaped
-    .replace(/\^\(([^)]+)\)/g, "<sup>$1</sup>")
-    .replace(/\^(-?[A-Za-z0-9]+)/g, "<sup>$1</sup>")
-    .replace(/_\(([^)]+)\)/g, "<sub>$1</sub>")
-    .replace(/_(-?[A-Za-z0-9]+)/g, "<sub>$1</sub>");
+    .replace(/([A-Za-z0-9]+)\^\(([^)]+)\)/g, '<span style="white-space:nowrap">$1<sup>$2</sup></span>')
+    .replace(/([A-Za-z0-9]+)\^(-?[A-Za-z0-9]+)/g, '<span style="white-space:nowrap">$1<sup>$2</sup></span>')
+    .replace(/([A-Za-z0-9]+)_\(([^)]+)\)/g, '<span style="white-space:nowrap">$1<sub>$2</sub></span>')
+    .replace(/([A-Za-z0-9]+)_(-?[A-Za-z0-9]+)/g, '<span style="white-space:nowrap">$1<sub>$2</sub></span>');
 }
 // Full pipeline for user-facing math/lesson text: escape, then markdown bold,
 // then sup/sub. Use this (not escapeHtml alone) for anything that may contain
