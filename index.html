@@ -119,6 +119,12 @@
   .lesson-body { font-family: 'Fraunces', serif; font-size: 1.05rem; line-height: 1.7; white-space: pre-wrap; }
   .lesson-body strong { color: var(--accent); }
   sup, sub { font-size: 0.7em; }
+  .diagnosis-tree-wrap {
+    overflow-x: auto; margin: 20px 0 6px; border: 1px solid var(--rule); border-radius: 8px;
+    padding: 10px; background: var(--surface);
+  }
+  .diagnosis-tree-wrap svg { display: block; }
+  .tree-scroll-hint { font-size: 0.75rem; color: var(--chalk-dim); text-align: center; margin-bottom: 20px; }
   .next-btn {
     margin-top: 26px; padding: 12px 22px; background: var(--accent); color: var(--bg-deep);
     border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.95rem;
@@ -1006,12 +1012,130 @@ function stageTrack(active) {
     </div>`).join("")}</div>`;
 }
 
+// ============================================================
+// DIAGNOSIS TREE -- inline theme-aware SVG for the prob_diagnosis lesson.
+// Same bottom-up layout algorithm used to build the reference PPTX version,
+// ported to plain JS/SVG so it recolors automatically with the app's theme.
+// ============================================================
+const DIAGNOSIS_TREE_DATA = {
+  label: ["Probability-related", "question"], leaf: false,
+  children: [
+    { label: ["Counting Methods"], sub: '"how many ways?"', leaf: false, children: [
+      { label: ["Counting Principle"], sub: "multiply each step", leaf: true },
+      { label: ["Permutations"], sub: "nPr, order matters", leaf: true },
+      { label: ["Combinations"], sub: "nCr, order doesn't matter", leaf: true },
+    ]},
+    { label: ["True Probability"], sub: "wants a probability", leaf: false, children: [
+      { label: ["Simple/", "Single-Event"], sub: "one draw", leaf: false, children: [
+        { label: ["Direct"], sub: "favorable/total", leaf: true },
+        { label: ["Complement"], sub: "1 - P(opp.)", leaf: true },
+      ]},
+      { label: ["Compound"], sub: "multiple events", leaf: false, children: [
+        { label: ["Compound AND"], sub: "multiply", leaf: false, children: [
+          { label: ["With", "Replacement"], sub: "pool resets", leaf: true },
+          { label: ["Without", "Replacement"], sub: "pool shrinks", leaf: true },
+        ]},
+        { label: ["Compound OR"], sub: "add (- overlap)", leaf: true },
+      ]},
+      { label: ["Conditional"], sub: '"given that..."', leaf: false, children: [
+        { label: ["Given Directly"], sub: "read the stated %", leaf: true },
+        { label: ["Recompute", "the Pool"], sub: "adjust counts", leaf: true },
+      ]},
+      { label: ["Geometric"], sub: "area/length-based", leaf: false, children: [
+        { label: ["Length-based", "(1-D)"], sub: "fav/total length", leaf: true },
+        { label: ["Area-based", "(2-D)"], sub: "fav/total area", leaf: true },
+      ]},
+    ]},
+    { label: ["Expected Value"], sub: '"expected value", avg', leaf: false, children: [
+      { label: ["Two-Outcome", "Game"], sub: "E=(payout)(p)-cost", leaf: true },
+      { label: ["Multiple", "Outcomes"], sub: "E=sum(v x p)", leaf: true },
+    ]},
+  ],
+};
+const TREE_LEAF_W = 130, TREE_H_GAP = 14, TREE_V_GAP = 34, TREE_BOX_H = 58, TREE_TOP_MARGIN = 14;
+
+function treeComputeWidth(node) {
+  if (!node.children || node.children.length === 0) {
+    node.width = TREE_LEAF_W;
+  } else {
+    node.children.forEach(treeComputeWidth);
+    node.width = node.children.reduce((s, c) => s + c.width, 0) + TREE_H_GAP * (node.children.length - 1);
+  }
+  return node.width;
+}
+function treeAssignPositions(node, xStart, depth) {
+  node.x = xStart;
+  node.centerX = xStart + node.width / 2;
+  node.y = TREE_TOP_MARGIN + depth * (TREE_BOX_H + TREE_V_GAP);
+  if (node.children) {
+    let cx = xStart;
+    node.children.forEach(child => {
+      treeAssignPositions(child, cx, depth + 1);
+      cx += child.width + TREE_H_GAP;
+    });
+  }
+}
+
+function buildDiagnosisTreeSVG() {
+  treeComputeWidth(DIAGNOSIS_TREE_DATA);
+  treeAssignPositions(DIAGNOSIS_TREE_DATA, 0, 0);
+  const totalW = DIAGNOSIS_TREE_DATA.width;
+  let maxY = 0;
+  let svgParts = [];
+
+  function drawNode(node) {
+    const boxW = node.children ? Math.min(Math.max(node.width * 0.55, 110), 190) : TREE_LEAF_W;
+    const x = node.centerX - boxW / 2;
+    const y = node.y;
+    maxY = Math.max(maxY, y + TREE_BOX_H);
+    const fill = node.leaf ? "var(--accent)" : "var(--surface-hi)";
+    const textColor = node.leaf ? "var(--bg-deep)" : "var(--chalk)";
+    const strokeColor = node.leaf ? "var(--accent-dim)" : "var(--rule)";
+    svgParts.push(`<rect x="${x}" y="${y}" width="${boxW}" height="${TREE_BOX_H}" rx="6" fill="${fill}" stroke="${strokeColor}" stroke-width="0.75" />`);
+    const titleLines = node.label;
+    const hasSub = !!node.sub;
+    const titleBlockH = hasSub ? TREE_BOX_H * 0.58 : TREE_BOX_H;
+    const lineH = 12;
+    const titleStartY = y + (titleBlockH - (titleLines.length - 1) * lineH) / 2 + 2;
+    titleLines.forEach((line, i) => {
+      svgParts.push(`<text x="${node.centerX}" y="${titleStartY + i * lineH}" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="700" fill="${textColor}">${escapeHtml(line)}</text>`);
+    });
+    if (hasSub) {
+      svgParts.push(`<text x="${node.centerX}" y="${y + TREE_BOX_H * 0.8}" text-anchor="middle" dominant-baseline="central" font-size="7.5" font-style="italic" fill="${textColor}">${escapeHtml(node.sub)}</text>`);
+    }
+    if (node.children) {
+      const parentBottom = y + TREE_BOX_H;
+      const busY = parentBottom + TREE_V_GAP / 2;
+      svgParts.push(`<line x1="${node.centerX}" y1="${parentBottom}" x2="${node.centerX}" y2="${busY}" stroke="var(--chalk-dim)" stroke-width="1" />`);
+      const firstX = node.children[0].centerX, lastX = node.children[node.children.length - 1].centerX;
+      svgParts.push(`<line x1="${firstX}" y1="${busY}" x2="${lastX}" y2="${busY}" stroke="var(--chalk-dim)" stroke-width="1" />`);
+      node.children.forEach(child => {
+        svgParts.push(`<line x1="${child.centerX}" y1="${busY}" x2="${child.centerX}" y2="${child.y}" stroke="var(--chalk-dim)" stroke-width="1" marker-end="url(#tree-arrow)" />`);
+        drawNode(child);
+      });
+    }
+  }
+  drawNode(DIAGNOSIS_TREE_DATA);
+
+  const viewH = maxY + 16;
+  return `<div class="diagnosis-tree-wrap">
+    <svg width="${totalW}" height="${viewH}" viewBox="0 0 ${totalW} ${viewH}">
+      <defs><marker id="tree-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="var(--chalk-dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      ${svgParts.join("\n")}
+    </svg>
+  </div>
+  <div class="tree-scroll-hint">Scroll sideways to see the whole tree \u2192</div>`;
+}
+
 function renderLesson() {
   const c = CONTENT[state.activeConcept];
+  const isDiagnosis = state.activeConcept === "prob_diagnosis";
   app.innerHTML = header(c.name) +
     `<span class="back-link" onclick="backToMap()">&larr; Mastery map</span>` +
     stageTrack("Lesson") +
     `<div class="lesson-body">${formatText(c.lesson)}</div>` +
+    (isDiagnosis ? buildDiagnosisTreeSVG() : "") +
     `<button class="next-btn" onclick="goFlash()">On to flashcards &rarr;</button>`;
 }
 window.backToMap = function() { cancelPendingCelebration(); state.screen = "map"; applyBackground(state.meta.background); render(); };
